@@ -973,7 +973,16 @@
     };
 
     /* ---------- PostRegistration view ---------- */
-    const PostRegistration = () => (
+    const PostRegistration = () => {
+      useEffect(() => {
+        // Mobile-safe hard reset to top: window.scrollTo solo no alcanza en iOS
+        requestAnimationFrame(() => {
+          window.scrollTo(0, 0);
+          document.documentElement.scrollTop = 0;
+          if (document.body) document.body.scrollTop = 0;
+        });
+      }, []);
+      return (
       <div className="animate-fade-up">
         <Marquee />
         <section className="relative pt-16 md:pt-24 pb-16 px-4 sm:px-6">
@@ -1039,7 +1048,8 @@
           </div>
         </section>
       </div>
-    );
+      );
+    };
 
     /* ---------- Registration view ---------- */
     const Registration = ({ countdown, onSubmit, submitting }) => (
@@ -1074,12 +1084,25 @@
           setSubmitting(false);
           setOverlay(true);
           setTimeout(() => {
+            // 1) Scroll a top ANTES de cambiar la view (el overlay todavía tapa → sin flash)
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            if (document.body) document.body.scrollTop = 0;
+            // 2) Cambiar la view + quitar overlay
             setView('postRegistration');
             setOverlay(false);
-            window.scrollTo({ top: 0, behavior: 'auto' });
           }, 2500);
         }, 900);
       }, []);
+
+      // Lock body scroll durante el overlay (evita scroll accidental en mobile)
+      useEffect(() => {
+        if (overlay) {
+          const prev = document.body.style.overflow;
+          document.body.style.overflow = 'hidden';
+          return () => { document.body.style.overflow = prev; };
+        }
+      }, [overlay]);
 
       return (
         <>
