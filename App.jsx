@@ -181,7 +181,7 @@ const Hero = ({ countdown, onOpenModal }) => (
       <div className="text-center lg:text-left" style={{ animation: "fadeUp .9s cubic-bezier(.2,.7,.2,1) both" }}>
         <LiveBadge />
         <h1 className="mt-6 font-black text-[clamp(2.2rem,6.2vw,4.6rem)] leading-[1.02] tracking-[-0.02em]">
-          Cómo construir una agencia de IA que facture <span className="travel-light inline-block"><span className="text-brand-gradient">5.000€/mes</span></span>
+          Cómo construir una agencia de IA que facture <span className="text-brand-gradient">5.000€/mes</span>
         </h1>
         <p className="mt-6 text-white/75 text-lg sm:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">
           Te mostramos el roadmap que estamos utilizando en Nexum AI para conseguir clientes, cerrar proyectos y generar ingresos recurrentes; <span className="text-brand-solid font-semibold whitespace-nowrap">sin necesidad de ser técnico</span>.
@@ -781,29 +781,6 @@ export default function App() {
         }
         @keyframes travelAngle { to { --travel-angle: 360deg; } }
 
-        /* Traveling light around headline highlight */
-        .travel-light { position: relative; padding: 0 2px; }
-        .travel-light::before {
-          content: "";
-          position: absolute;
-          inset: -6px -10px;
-          border-radius: 14px;
-          padding: 1.5px;
-          background: conic-gradient(from var(--travel-angle, 0deg),
-            transparent 0turn, transparent 0.68turn,
-            rgba(242,57,255,0) 0.72turn,
-            rgba(242,57,255,0.85) 0.82turn,
-            rgba(255,198,255,1) 0.88turn,
-            rgba(242,57,255,0.85) 0.94turn,
-            transparent 1turn);
-          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          -webkit-mask-composite: xor;
-                  mask-composite: exclude;
-          animation: travelAngle 4.2s linear infinite;
-          pointer-events: none;
-          filter: blur(0.4px);
-        }
-
         /* Traveling light around cards — subtle */
         .card-travel::before {
           content: "";
@@ -829,7 +806,7 @@ export default function App() {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .travel-light::before, .card-travel::before { animation: none; opacity: 0.25; }
+          .card-travel::before { animation: none; opacity: 0.25; }
         }
 
         /* Slow pulsing violet glow behind nav countdown */
