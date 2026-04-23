@@ -253,17 +253,17 @@ const NebulaCanvas = () => {
     };
 
     const init = () => {
-      // Nebulosa: blobs grandes de color con gradiente radial, derivando lento
-      const count = 8;
+      // Nebulosa mínima: pocos blobs chicos, muy tenues
+      const count = 4;
       blobs = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        baseR: 120 + Math.random() * 180,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: (Math.random() - 0.5) * 0.14,
-        baseAlpha: 0.08 + Math.random() * 0.14,
+        baseR: 55 + Math.random() * 80,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.12,
+        baseAlpha: 0.03 + Math.random() * 0.05,
         phase: Math.random() * Math.PI * 2,
-        freq: 0.00025 + Math.random() * 0.0005,
+        freq: 0.0002 + Math.random() * 0.0004,
         color: Math.random() < 0.45 ? "242,57,255" : "137,67,227",
       }));
     };
