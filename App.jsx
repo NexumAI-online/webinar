@@ -234,6 +234,78 @@ const Hero = ({ countdown, onOpenModal }) => (
   </section>
 );
 
+const NebulaCanvas = () => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let raf = null, visible = true, particles = [], w = 0, h = 0;
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      w = rect.width; h = rect.height;
+      canvas.width = Math.floor(w * DPR);
+      canvas.height = Math.floor(h * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    };
+    const init = () => {
+      const n = Math.min(80, Math.max(28, Math.floor((w * h) / 9500)));
+      particles = Array.from({ length: n }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() < 0.5 ? -1 : 1) * (0.08 + Math.random() * 0.35),
+        amp: 6 + Math.random() * 22,
+        freq: 0.0004 + Math.random() * 0.0014,
+        phase: Math.random() * Math.PI * 2,
+        r: 0.6 + Math.random() * 2.2,
+        color: Math.random() < 0.55 ? "rgba(137,67,227," : "rgba(242,57,255,",
+        alpha: 0.12 + Math.random() * 0.32,
+      }));
+    };
+    const draw = (t) => {
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "lighter";
+      for (const p of particles) {
+        p.x += p.vx;
+        if (p.x < -12) p.x = w + 12;
+        else if (p.x > w + 12) p.x = -12;
+        const y = p.y + Math.sin(t * p.freq + p.phase) * p.amp;
+        ctx.fillStyle = p.color + p.alpha + ")";
+        ctx.beginPath();
+        ctx.arc(p.x, y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      raf = visible && !reduced ? requestAnimationFrame(draw) : null;
+    };
+
+    resize(); init();
+    if (reduced) draw(0);
+    else raf = requestAnimationFrame(draw);
+
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible && !reduced && !raf) raf = requestAnimationFrame(draw);
+      else if (!visible && raf) { cancelAnimationFrame(raf); raf = null; }
+    }, { rootMargin: "100px" });
+    io.observe(canvas);
+
+    let rt;
+    const onResize = () => { clearTimeout(rt); rt = setTimeout(() => { resize(); init(); }, 120); };
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      io.disconnect();
+      window.removeEventListener("resize", onResize);
+      clearTimeout(rt);
+    };
+  }, []);
+  return <canvas ref={ref} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true" style={{ filter: "blur(0.5px)" }} />;
+};
+
 const PainBlock = () => {
   const pains = [
     "Sabes usar herramientas, pero no generas ingresos con ellas",
@@ -247,7 +319,7 @@ const PainBlock = () => {
         <div className="reveal relative gradient-border-strong rounded-[2rem] p-8 md:p-14 overflow-hidden">
           <div className="absolute -top-40 -right-20 w-[460px] h-[460px] rounded-full bg-[#F239FF]/15 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-40 -left-20 w-[460px] h-[460px] rounded-full bg-[#8943E3]/18 blur-3xl pointer-events-none" />
-          <div className="absolute inset-0 pointer-events-none opacity-[0.08]" style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px)", backgroundSize: "24px 24px", maskImage: "radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 85%)", WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 85%)" }} />
+          <NebulaCanvas />
 
           <div className="relative text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full gradient-border text-[11px] tracking-[0.25em] uppercase font-semibold text-white/70">
