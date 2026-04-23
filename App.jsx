@@ -253,19 +253,24 @@ const NebulaCanvas = () => {
     };
 
     const init = () => {
-      // Nebulosa mínima: pocos blobs chicos, muy tenues
-      const count = 4;
-      blobs = Array.from({ length: count }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        baseR: 55 + Math.random() * 80,
-        vx: (Math.random() - 0.5) * 0.18,
-        vy: (Math.random() - 0.5) * 0.12,
-        baseAlpha: 0.03 + Math.random() * 0.05,
-        phase: Math.random() * Math.PI * 2,
-        freq: 0.0002 + Math.random() * 0.0004,
-        color: Math.random() < 0.45 ? "242,57,255" : "137,67,227",
-      }));
+      // Nebulosa mínima: pocos blobs chicos, tenues pero con movimiento claro
+      const count = 5;
+      blobs = Array.from({ length: count }, () => {
+        // Velocidad mínima garantizada (signo random pero magnitud ≥ 0.35)
+        const sx = Math.random() < 0.5 ? -1 : 1;
+        const sy = Math.random() < 0.5 ? -1 : 1;
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          baseR: 55 + Math.random() * 80,
+          vx: sx * (0.35 + Math.random() * 0.4),
+          vy: sy * (0.22 + Math.random() * 0.3),
+          baseAlpha: 0.04 + Math.random() * 0.06,
+          phase: Math.random() * Math.PI * 2,
+          freq: 0.0008 + Math.random() * 0.0012,
+          color: Math.random() < 0.45 ? "242,57,255" : "137,67,227",
+        };
+      });
     };
 
     const draw = (t) => {
