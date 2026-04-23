@@ -181,7 +181,7 @@ const Hero = ({ countdown, onOpenModal }) => (
           Cómo construir una agencia de IA que facture <span className="travel-light inline-block"><span className="text-brand-gradient">5.000€/mes</span></span>
         </h1>
         <p className="mt-6 text-white/75 text-lg sm:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">
-          Te mostramos el roadmap que estamos utilizando en Nexum AI para conseguir clientes, cerrar proyectos y generar ingresos recurrentes; <span className="text-brand-solid font-semibold">sin necesidad de ser técnico</span>.
+          Te mostramos el roadmap que estamos utilizando en Nexum AI para conseguir clientes, cerrar proyectos y generar ingresos recurrentes; <span className="text-brand-solid font-semibold whitespace-nowrap">sin necesidad de ser técnico</span>.
         </p>
 
         <blockquote className="mt-5 pl-4 border-l-2 border-[#8943E3]/60 text-white/55 text-[15px] italic max-w-xl mx-auto lg:mx-0 leading-relaxed">
