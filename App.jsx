@@ -341,6 +341,12 @@ const PainBlock = () => {
           <div className="absolute -top-40 -right-20 w-[460px] h-[460px] rounded-full bg-[#F239FF]/15 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-40 -left-20 w-[460px] h-[460px] rounded-full bg-[#8943E3]/18 blur-3xl pointer-events-none" />
           <NebulaCanvas />
+          <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{
+            backgroundImage: "linear-gradient(rgba(137,67,227,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(137,67,227,0.07) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+            maskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 92%)",
+            WebkitMaskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 92%)",
+          }} />
 
           <div className="relative text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full gradient-border text-[11px] tracking-[0.25em] uppercase font-semibold text-white/70">
