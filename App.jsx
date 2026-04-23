@@ -536,7 +536,7 @@ const Bonus = ({ onOpenModal }) => {
                 Valorado en 197€ — incluido con tu registro a la masterclass.
               </p>
               <blockquote className="mt-4 pl-4 border-l-2 border-[#F239FF]/60 text-white/75 italic text-[15px] leading-relaxed">
-                "…para que llegues preparado y saques el máximo provecho al evento"
+                Para que llegues preparado y saques el máximo provecho al evento
               </blockquote>
               <ul className="mt-6 space-y-3">
                 {items.map((s, i) => (
