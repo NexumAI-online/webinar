@@ -253,34 +253,38 @@ const NebulaCanvas = () => {
     };
 
     const init = () => {
-      const cols = Math.max(24, Math.floor(w / 16));
-      const rows = 6;
+      // Red densa tipo "piso" en perspectiva
+      const cols = Math.min(110, Math.max(70, Math.floor(w / 11)));
+      const rows = 36;
       gridCols = cols; gridRows = rows;
       grid = new Array(cols * rows);
       for (let j = 0; j < rows; j++) {
-        const rowT = rows > 1 ? j / (rows - 1) : 0;
-        // Perspectiva fake: back rows comprimidas arriba, front rows spread abajo
-        const yRow = h * 0.52 + (h * 0.45) * Math.pow(rowT, 1.5);
-        const amp = 5 + rowT * 14;
+        const rowT = j / (rows - 1);              // 0 front, 1 back
+        const depthFactor = Math.pow(rowT, 0.55); // perspectiva no-lineal
+        const yRow = h * 0.98 - (h * 0.78) * depthFactor;
+        const horizontalScale = 1 - depthFactor * 0.72; // back rows comprimidas al centro
+        const waveAmp = (1 - depthFactor * 0.7) * 16;
         for (let i = 0; i < cols; i++) {
+          const colT = i / (cols - 1) - 0.5;  // -0.5..0.5 (world X)
           grid[j * cols + i] = {
-            i, j, rowT,
-            baseX: (i / (cols - 1)) * w,
+            i, j, rowT, colT, depthFactor,
+            baseX: w / 2 + colT * w * horizontalScale,
             baseY: yRow,
             currentY: yRow,
-            amp,
-            color: ((i * 3 + j * 7) % 11 < 5) ? "p" : "v",
+            waveAmp,
+            tint: ((i * 3 + j * 7) % 13) < 3 ? "p" : "v",
           };
         }
       }
-      const bokehCount = Math.min(14, Math.max(5, Math.floor((w * h) / 26000)));
+      // Bokeh difuso por delante (upper half, donde no hay piso)
+      const bokehCount = Math.min(16, Math.max(6, Math.floor((w * h) / 24000)));
       bokeh = Array.from({ length: bokehCount }, () => ({
         x: Math.random() * w,
-        y: Math.random() * h * 0.7,
-        r: 22 + Math.random() * 42,
-        vx: (Math.random() - 0.5) * 0.2,
+        y: Math.random() * h * 0.55,
+        r: 18 + Math.random() * 38,
+        vx: (Math.random() - 0.5) * 0.22,
         vy: (Math.random() - 0.5) * 0.1,
-        alpha: 0.08 + Math.random() * 0.14,
+        alpha: 0.07 + Math.random() * 0.13,
         color: Math.random() < 0.55 ? "137,67,227" : "242,57,255",
       }));
     };
@@ -291,18 +295,22 @@ const NebulaCanvas = () => {
 
       const cols = gridCols, rows = gridRows;
 
-      // Calcular currentY para cada punto del grid
+      // Wave function: coherente en el mundo (no en pantalla)
       for (const p of grid) {
-        const wave1 = Math.sin(p.baseX * 0.009 + t * 0.00065) * p.amp;
-        const wave2 = Math.sin(p.baseX * 0.018 + t * 0.0011 + p.j * 0.4) * p.amp * 0.55;
-        p.currentY = p.baseY + wave1 + wave2;
+        const wx = p.colT * 9;
+        const wz = p.rowT * 7;
+        const wave =
+          Math.sin(wx + t * 0.0009) * p.waveAmp +
+          Math.sin(wx * 1.7 + wz * 0.9 + t * 0.0006) * p.waveAmp * 0.5 +
+          Math.sin(wz * 1.4 + t * 0.0007) * p.waveAmp * 0.35;
+        p.currentY = p.baseY - wave;
       }
 
-      // Líneas horizontales del mesh (más fuertes en front, más tenues en back)
-      ctx.lineWidth = 0.5;
+      // Líneas horizontales (constant Z) — sutiles
+      ctx.lineWidth = 0.4;
       for (let j = 0; j < rows; j++) {
-        const depth = 0.3 + (j / (rows - 1)) * 0.7;
-        ctx.strokeStyle = `rgba(137,67,227,${0.04 + depth * 0.08})`;
+        const depth = 1 - (j / (rows - 1)) * 0.75;
+        ctx.strokeStyle = `rgba(137,67,227,${0.025 + depth * 0.05})`;
         ctx.beginPath();
         for (let i = 0; i < cols; i++) {
           const p = grid[j * cols + i];
@@ -312,18 +320,30 @@ const NebulaCanvas = () => {
         ctx.stroke();
       }
 
-      // Puntos del grid (más grandes/brillantes en front)
-      for (const p of grid) {
-        const depth = 0.3 + p.rowT * 0.7;
-        const r = 0.6 + depth * 1.5;
-        const alpha = 0.22 + depth * 0.5;
-        ctx.fillStyle = p.color === "p" ? `rgba(242,57,255,${alpha})` : `rgba(137,67,227,${alpha})`;
+      // Líneas verticales (constant X) — cada 2 cols para no saturar
+      for (let i = 0; i < cols; i += 2) {
+        ctx.strokeStyle = `rgba(137,67,227,0.035)`;
         ctx.beginPath();
-        ctx.arc(p.baseX, p.currentY, r, 0, Math.PI * 2);
-        ctx.fill();
+        for (let j = 0; j < rows; j++) {
+          const p = grid[j * cols + i];
+          if (j === 0) ctx.moveTo(p.baseX, p.currentY);
+          else ctx.lineTo(p.baseX, p.currentY);
+        }
+        ctx.stroke();
       }
 
-      // Bokeh: círculos difusos por delante
+      // Nodos (dots pequeños, densos, con depth fade)
+      for (const p of grid) {
+        const depth = 1 - p.rowT * 0.68;
+        const size = 0.7 + depth * 1.2;
+        const alpha = 0.28 + depth * 0.55;
+        ctx.fillStyle = p.tint === "p"
+          ? `rgba(242,57,255,${alpha})`
+          : `rgba(137,67,227,${alpha})`;
+        ctx.fillRect(p.baseX - size / 2, p.currentY - size / 2, size, size);
+      }
+
+      // Bokeh
       for (const b of bokeh) {
         b.x += b.vx; b.y += b.vy;
         if (b.x < -b.r) b.x = w + b.r; else if (b.x > w + b.r) b.x = -b.r;
@@ -360,7 +380,7 @@ const NebulaCanvas = () => {
       clearTimeout(rt);
     };
   }, []);
-  return <canvas ref={ref} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true" style={{ filter: "blur(0.4px)" }} />;
+  return <canvas ref={ref} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true" style={{ filter: "blur(0.35px)" }} />;
 };
 
 const PainBlock = () => {
