@@ -242,11 +242,7 @@ const NebulaCanvas = () => {
     const ctx = canvas.getContext("2d");
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let raf = null, visible = true, grid = [], bokeh = [], w = 0, h = 0;
-    // World constants
-    const worldXHalf = 1;
-    const worldZMax = 6;
-    const focal = 0.6;
+    let raf = null, visible = true, blobs = [], w = 0, h = 0;
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -257,34 +253,18 @@ const NebulaCanvas = () => {
     };
 
     const init = () => {
-      // Wave surface 3D en perspectiva — muchos nodos pequeños
-      const cols = Math.min(130, Math.max(70, Math.floor(w / 8)));
-      const rows = Math.min(55, Math.max(25, Math.floor(h / 8)));
-      grid = new Array(cols * rows);
-      for (let j = 0; j < rows; j++) {
-        const rowT = j / (rows - 1);
-        const wz = Math.pow(rowT, 0.8) * worldZMax;
-        const persp = focal / (focal + wz);
-        for (let i = 0; i < cols; i++) {
-          const colT = i / (cols - 1) - 0.5;
-          const wx = colT * 2 * worldXHalf;
-          grid[j * cols + i] = {
-            i, j, rowT, wx, wz, persp,
-            phase: Math.random() * Math.PI * 2,
-            tint: Math.random() < 0.18 ? "p" : "v",
-          };
-        }
-      }
-      // Bokeh mínimo en upper area (above horizon)
-      const bokehCount = Math.min(6, Math.max(2, Math.floor((w * h) / 55000)));
-      bokeh = Array.from({ length: bokehCount }, () => ({
+      // Nebulosa: blobs grandes de color con gradiente radial, derivando lento
+      const count = 8;
+      blobs = Array.from({ length: count }, () => ({
         x: Math.random() * w,
-        y: Math.random() * h * 0.5,
-        r: 30 + Math.random() * 45,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.08,
-        alpha: 0.04 + Math.random() * 0.07,
-        color: Math.random() < 0.55 ? "137,67,227" : "242,57,255",
+        y: Math.random() * h,
+        baseR: 120 + Math.random() * 180,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.14,
+        baseAlpha: 0.08 + Math.random() * 0.14,
+        phase: Math.random() * Math.PI * 2,
+        freq: 0.00025 + Math.random() * 0.0005,
+        color: Math.random() < 0.45 ? "242,57,255" : "137,67,227",
       }));
     };
 
@@ -292,44 +272,26 @@ const NebulaCanvas = () => {
       ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = "lighter";
 
-      const cx = w * 0.5;
-      const horizonY = h * 0.08;
-      const groundMaxY = h * 0.96;
-      const waveAmpPx = Math.min(80, h * 0.18);
-      const xScaleBase = w * 0.52;
+      for (const b of blobs) {
+        b.x += b.vx;
+        b.y += b.vy;
+        // Wrap toroidal con buffer del radio
+        if (b.x < -b.baseR) b.x = w + b.baseR;
+        else if (b.x > w + b.baseR) b.x = -b.baseR;
+        if (b.y < -b.baseR) b.y = h + b.baseR;
+        else if (b.y > h + b.baseR) b.y = -b.baseR;
 
-      for (const p of grid) {
-        // Wave height (world Y) — combinación de ondas que viajan en X y en Z (hacia el viewer)
-        const wy =
-          Math.sin(p.wx * 2.6 + t * 0.00095) * 0.3 +
-          Math.sin(p.wz * 1.3 - t * 0.0007) * 0.22 +
-          Math.sin(p.wx * 4 + p.wz * 1.6 + t * 0.00055) * 0.14;
+        // Breathing: alpha y radio pulsan lento
+        const breath = Math.sin(t * b.freq + b.phase);
+        const alpha = b.baseAlpha * (0.75 + 0.25 * breath);
+        const r = b.baseR * (0.94 + 0.06 * Math.sin(t * b.freq * 1.3 + b.phase));
 
-        // Proyección a pantalla
-        const screenX = cx + p.wx * p.persp * xScaleBase;
-        const groundY = horizonY + (groundMaxY - horizonY) * p.persp;
-        const screenY = groundY - wy * waveAmpPx * p.persp;
-
-        const size = 0.4 + p.persp * 0.9;
-        const pulse = 0.72 + 0.28 * Math.sin(t * 0.0016 + p.phase);
-        const alpha = (0.1 + p.persp * 0.42) * pulse;
-
-        ctx.fillStyle = p.tint === "p"
-          ? `rgba(242,57,255,${alpha})`
-          : `rgba(137,67,227,${alpha})`;
-        ctx.fillRect(screenX - size / 2, screenY - size / 2, size, size);
-      }
-
-      // Bokeh sutil arriba
-      for (const b of bokeh) {
-        b.x += b.vx; b.y += b.vy;
-        if (b.x < -b.r) b.x = w + b.r; else if (b.x > w + b.r) b.x = -b.r;
-        if (b.y < -b.r) b.y = h + b.r; else if (b.y > h + b.r) b.y = -b.r;
-        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
-        grad.addColorStop(0, `rgba(${b.color},${b.alpha})`);
+        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, r);
+        grad.addColorStop(0, `rgba(${b.color},${alpha})`);
+        grad.addColorStop(0.45, `rgba(${b.color},${alpha * 0.35})`);
         grad.addColorStop(1, `rgba(${b.color},0)`);
         ctx.fillStyle = grad;
-        ctx.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+        ctx.fillRect(b.x - r, b.y - r, r * 2, r * 2);
       }
 
       raf = visible && !reduced ? requestAnimationFrame(draw) : null;
