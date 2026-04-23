@@ -164,7 +164,10 @@ const Nav = ({ countdown, onOpenModal }) => (
   <nav className="fixed top-0 inset-x-0 z-40 backdrop-blur-xl bg-black/50 border-b border-white/5">
     <div className="max-w-[1180px] mx-auto px-4 sm:px-6 h-14 md:h-16 flex items-center justify-between">
       <a href="#top"><Logo className="h-6 md:h-7" /></a>
-      <CountdownPill c={countdown} />
+      <div className="relative">
+        <span aria-hidden className="nav-glow pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[220%] rounded-full" />
+        <CountdownPill c={countdown} />
+      </div>
       <button type="button" onClick={onOpenModal} className="sm:hidden text-[11px] font-semibold uppercase tracking-wider text-white/80 border border-white/15 rounded-full px-3 py-1.5">
         Reservar
       </button>
@@ -193,7 +196,6 @@ const Hero = ({ countdown, onOpenModal }) => (
             <Calendar className="w-5 h-5 text-[#F239FF]" />
             <span>Miércoles 7 de mayo · 19:00h (España)</span>
           </div>
-          <CountdownBig c={countdown} />
         </div>
 
         <div className="mt-8 flex flex-col items-center lg:items-start gap-3">
@@ -828,6 +830,21 @@ export default function App() {
 
         @media (prefers-reduced-motion: reduce) {
           .travel-light::before, .card-travel::before { animation: none; opacity: 0.25; }
+        }
+
+        /* Slow pulsing violet glow behind nav countdown */
+        @keyframes navGlow {
+          0%, 100% { opacity: 0.18; transform: translate(-50%, -50%) scale(0.92); }
+          50%      { opacity: 0.55; transform: translate(-50%, -50%) scale(1.05); }
+        }
+        .nav-glow {
+          background: radial-gradient(ellipse at center, rgba(137,67,227,0.55) 0%, rgba(137,67,227,0.22) 45%, transparent 72%);
+          filter: blur(18px);
+          animation: navGlow 8s ease-in-out infinite;
+          will-change: opacity, transform;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .nav-glow { animation: none; opacity: 0.3; }
         }
       `}</style>
       {view === "registration" ? (

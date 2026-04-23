@@ -313,6 +313,21 @@
   @media (prefers-reduced-motion: reduce) {
     .travel-light::before, .card-travel::before { animation: none; opacity: 0.25; }
   }
+
+  /* Slow pulsing violet glow behind nav countdown */
+  @keyframes navGlow {
+    0%, 100% { opacity: 0.18; transform: translate(-50%, -50%) scale(0.92); }
+    50%      { opacity: 0.55; transform: translate(-50%, -50%) scale(1.05); }
+  }
+  .nav-glow {
+    background: radial-gradient(ellipse at center, rgba(137,67,227,0.55) 0%, rgba(137,67,227,0.22) 45%, transparent 72%);
+    filter: blur(18px);
+    animation: navGlow 8s ease-in-out infinite;
+    will-change: opacity, transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-glow { animation: none; opacity: 0.3; }
+  }
 </style>
 </head>
 <body class="bg-stage">
@@ -473,8 +488,11 @@
           <a href="#top" className="flex items-center gap-2 group shrink-0">
             <Logo className="h-6 md:h-7" />
           </a>
-          <CountdownMini c={countdown} />
-          <CountdownPill c={countdown} />
+          <div className="relative">
+            <span aria-hidden="true" className="nav-glow pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[220%] rounded-full"></span>
+            <CountdownMini c={countdown} />
+            <CountdownPill c={countdown} />
+          </div>
         </div>
       </nav>
     );
@@ -513,7 +531,6 @@
                 <IconCalendar className="w-4 h-4 text-nexum-pink" />
                 <span>Miércoles 7 de mayo · 19:00h (España)</span>
               </div>
-              <CountdownBig c={countdown} />
             </div>
 
             <div className="mt-6 flex flex-col items-center lg:items-start gap-2.5">
