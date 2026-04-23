@@ -390,15 +390,15 @@ const About = () => (
           Agustín Badt <span className="text-brand-gradient">&</span> Juan Pablo Rosso
         </h2>
         <div className="mt-6 space-y-4 text-white/70 text-[16px] leading-relaxed">
-          <p>Somos los <span className="text-white font-medium">co-fundadores de Nexum AI</span> — una agencia de IA que trabaja con negocios en toda América Latina.</p>
+          <p>Somos los <span className="text-white font-medium">co-fundadores de Nexum AI</span>, una agencia de IA que trabaja con empresas en todo el mundo.</p>
           <p>No somos gurús. No vendemos humo. Construimos Nexum AI desde cero y hoy ayudamos a empresas reales a implementar IA en sus operaciones.</p>
-          <p>En esta masterclass te mostramos el <span className="text-white">mismo sistema</span> que usamos nosotros — y que replicaríamos si tuviéramos que empezar de cero hoy.</p>
+          <p>En esta masterclass te mostramos el <span className="text-white">mismo sistema</span> que usamos nosotros, y que replicaríamos si tuviéramos que empezar de cero hoy.</p>
         </div>
         <div className="mt-10 grid grid-cols-3 gap-4 md:gap-6">
           {[
             { n: "+50", l: "Empresas asesoradas" },
             { n: "+3 años", l: "En el mercado de IA" },
-            { n: "Global", l: "Clientes en LATAM y Europa" },
+            { n: "Global", l: "Clientes en todo el mundo" },
           ].map((s) => (
             <div key={s.l} className="gradient-border rounded-2xl p-4 md:p-5 text-center">
               <div className="font-bold text-2xl md:text-3xl text-brand-solid">{s.n}</div>
