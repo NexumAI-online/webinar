@@ -842,85 +842,42 @@ const PostRegistration = () => {
     {/* WhatsApp card */}
     <section className="relative px-4 sm:px-6 pb-10 md:pb-14">
       <div className="max-w-[1080px] mx-auto">
-        <div className="relative gradient-border-strong rounded-[2rem] overflow-hidden p-6 md:p-10">
-          <div className="absolute -top-32 -right-20 w-[420px] h-[420px] rounded-full bg-emerald-500/15 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-32 -left-20 w-[420px] h-[420px] rounded-full bg-[#8943E3]/25 blur-3xl pointer-events-none" />
-          <div className="relative grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-12 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full gradient-border text-[11px] tracking-[0.2em] uppercase font-semibold text-white/80">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" style={{ animation: "pulseDot 1.6s ease-in-out infinite" }} />
-                Grupo privado
-              </div>
-              <h2 className="mt-4 font-bold text-[clamp(1.6rem,3.6vw,2.4rem)] leading-[1.1] tracking-[-0.02em]">
-                Únete al <span className="text-brand-gradient">grupo de WhatsApp</span>
-              </h2>
-              <p className="mt-4 text-white/70 text-[15.5px] leading-relaxed max-w-lg">
-                Entrá al grupo para no perderte ningún detalle del evento en vivo.
-              </p>
-              <ul className="mt-6 space-y-3.5">
-                {[
-                  { Icon: Calendar, t: "Recordatorios puntuales", d: "y el link directo al evento en vivo" },
-                  { Icon: FileText, t: "Contenidos y tips",       d: "para que llegues listo a la masterclass" },
-                  { Icon: Users,    t: "Networking",              d: "con otros que están construyendo su agencia de IA" },
-                ].map((it, i) => (
-                  <li key={i} className="flex gap-3 items-start">
-                    <span className="shrink-0 mt-0.5 w-9 h-9 rounded-xl flex items-center justify-center bg-emerald-500/15 border border-emerald-400/25">
-                      <it.Icon className="w-4 h-4 text-emerald-300" strokeWidth={2} />
-                    </span>
-                    <div className="text-[14.5px] leading-relaxed pt-1">
-                      <span className="font-semibold text-white">{it.t}</span>
-                      <span className="text-white/65"> — {it.d}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <a href="https://chat.whatsapp.com/JgtmSpZqoSq3lwzDvfyJqc?mode=gi_t" target="_blank" rel="noopener noreferrer"
-                 className="cta-whatsapp mt-7 rounded-full px-7 py-3.5 font-semibold text-white text-sm sm:text-base tracking-wide inline-flex items-center gap-2.5">
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" aria-hidden="true">
-                  <path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.01zm-7.01 15.24h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c-.02 4.55-3.71 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.02 2.56.12.17 1.76 2.69 4.27 3.77.6.26 1.06.41 1.42.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/>
-                </svg>
-                UNIRME AL WHATSAPP
-              </a>
+        <div className="relative gradient-border-strong rounded-[2rem] overflow-hidden p-6 md:p-12 text-center whatsapp-pulse">
+          <div className="relative max-w-[640px] mx-auto">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full gradient-border text-[11px] tracking-[0.2em] uppercase font-semibold text-white/80">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" style={{ animation: "pulseDot 1.6s ease-in-out infinite" }} />
+              Grupo privado
             </div>
-
-            {/* Phone mockup */}
-            <div className="relative mx-auto w-full max-w-[280px]" style={{ animation: "float 9s ease-in-out infinite" }}>
-              <div className="absolute -inset-8 bg-gradient-to-br from-emerald-500/25 via-transparent to-[#8943E3]/30 blur-3xl rounded-[3rem] pointer-events-none" />
-              <div className="relative aspect-[9/18] rounded-[38px] bg-gradient-to-b from-[#151318] to-[#0b0a0f] p-2.5 ring-1 ring-white/10"
-                   style={{ boxShadow: "0 40px 80px -20px rgba(37,211,102,0.3), 0 40px 80px -20px rgba(137,67,227,0.3)" }}>
-                <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-24 h-5 rounded-b-2xl bg-black/90 z-10" />
-                <div className="rounded-[30px] bg-[#0b141a] h-full overflow-hidden flex flex-col">
-                  <div className="bg-[#1f2c33] px-3 py-2.5 pt-7 flex items-center gap-2.5 shrink-0">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shrink-0">
-                      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="#fff">
-                        <path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.01zm-7.01 15.24h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c-.02 4.55-3.71 8.23-8.24 8.23z"/>
-                      </svg>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[11px] font-semibold text-white truncate">Masterclass Nexum AI</div>
-                      <div className="text-[9px] text-emerald-300/90">en línea</div>
-                    </div>
+            <h2 className="mt-4 font-bold text-[clamp(1.7rem,4vw,2.6rem)] leading-[1.1] tracking-[-0.02em]">
+              Únete al <span className="text-brand-gradient">grupo de WhatsApp</span>
+            </h2>
+            <p className="mt-4 text-white/70 text-[15.5px] leading-relaxed max-w-md mx-auto">
+              Entrá al grupo para no perderte ningún detalle del evento en vivo.
+            </p>
+            <ul className="mt-7 space-y-3.5 text-left max-w-md mx-auto">
+              {[
+                { Icon: Calendar, t: "Recordatorios puntuales", d: "y el link directo al evento en vivo" },
+                { Icon: FileText, t: "Contenidos y tips",       d: "para que llegues listo a la masterclass" },
+                { Icon: Users,    t: "Networking",              d: "con otros que están construyendo su agencia de IA" },
+              ].map((it, i) => (
+                <li key={i} className="flex gap-3 items-start">
+                  <span className="shrink-0 mt-0.5 w-9 h-9 rounded-xl flex items-center justify-center bg-emerald-500/15 border border-emerald-400/25">
+                    <it.Icon className="w-4 h-4 text-emerald-300" strokeWidth={2} />
+                  </span>
+                  <div className="text-[14.5px] leading-relaxed pt-1">
+                    <span className="font-semibold text-white">{it.t}</span>
+                    <span className="text-white/65"> — {it.d}</span>
                   </div>
-                  <div className="flex-1 p-2.5 space-y-1.5 text-[9.5px] bg-[#0b141a]">
-                    <div className="max-w-[85%] bg-[#202c33] text-white/90 rounded-lg rounded-tl-sm px-2.5 py-1.5 leading-snug">
-                      ¡Hola! Bienvenido al grupo 👋
-                    </div>
-                    <div className="max-w-[85%] bg-[#202c33] text-white/90 rounded-lg rounded-tl-sm px-2.5 py-1.5 leading-snug">
-                      Acá vas a recibir los recordatorios y todo el material previo.
-                    </div>
-                    <div className="ml-auto max-w-[85%] bg-emerald-700/80 text-white rounded-lg rounded-tr-sm px-2.5 py-1.5 leading-snug">
-                      ¡Gracias! Nos vemos el 7 de mayo 🚀
-                    </div>
-                  </div>
-                  <div className="px-2 py-2 bg-[#1f2c33] flex items-center gap-2 shrink-0">
-                    <div className="flex-1 h-6 bg-[#2a3942] rounded-full" />
-                    <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center">
-                      <Send className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                </li>
+              ))}
+            </ul>
+            <a href="https://chat.whatsapp.com/JgtmSpZqoSq3lwzDvfyJqc?mode=gi_t" target="_blank" rel="noopener noreferrer"
+               className="cta-whatsapp mt-8 rounded-full px-7 py-3.5 font-semibold text-white text-sm sm:text-base tracking-wide inline-flex items-center justify-center gap-2.5">
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" aria-hidden="true">
+                <path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.01zm-7.01 15.24h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c-.02 4.55-3.71 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.02 2.56.12.17 1.76 2.69 4.27 3.77.6.26 1.06.41 1.42.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/>
+              </svg>
+              UNIRME AL WHATSAPP
+            </a>
           </div>
         </div>
       </div>
@@ -933,7 +890,7 @@ const PostRegistration = () => {
           Además, no te olvides de:
         </h3>
         <div className="mt-8 grid sm:grid-cols-2 gap-4 md:gap-5">
-          <div className="reveal gradient-border rounded-2xl p-6">
+          <div className="gradient-border rounded-2xl p-6">
             <div className="w-11 h-11 rounded-xl brand-gradient flex items-center justify-center">
               <Calendar className="w-5 h-5 text-white" strokeWidth={2} />
             </div>
@@ -946,7 +903,7 @@ const PostRegistration = () => {
               <Calendar className="w-4 h-4" /> Añadir al calendario
             </a>
           </div>
-          <div className="reveal gradient-border rounded-2xl p-6">
+          <div className="gradient-border rounded-2xl p-6">
             <div className="w-11 h-11 rounded-xl bg-[#F239FF]/15 border border-[#F239FF]/30 flex items-center justify-center">
               <Mail className="w-5 h-5 text-[#F239FF]" strokeWidth={2} />
             </div>
@@ -1213,6 +1170,28 @@ export default function App() {
         }
         @media (prefers-reduced-motion: reduce) {
           .nav-glow { animation: none; opacity: 0.3; }
+        }
+
+        /* WhatsApp pulse — emerald + purple, matches grupo card */
+        @keyframes whatsappPulse {
+          0%, 100% { opacity: 0.32; transform: scale(0.95); }
+          50%      { opacity: 0.85; transform: scale(1.05); }
+        }
+        .whatsapp-pulse::after {
+          content: "";
+          position: absolute;
+          inset: -12%;
+          background:
+            radial-gradient(ellipse at 30% 50%, rgba(37,211,102,0.28) 0%, transparent 55%),
+            radial-gradient(ellipse at 70% 50%, rgba(137,67,227,0.28) 0%, transparent 55%);
+          filter: blur(22px);
+          animation: whatsappPulse 10s ease-in-out infinite;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .whatsapp-pulse > * { position: relative; z-index: 1; }
+        @media (prefers-reduced-motion: reduce) {
+          .whatsapp-pulse::after { animation: none; opacity: 0.5; transform: none; }
         }
 
         /* WhatsApp CTA — green ↔ violet gradient */
