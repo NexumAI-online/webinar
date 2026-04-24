@@ -623,7 +623,7 @@ const Bonus = ({ onOpenModal }) => {
 const ClosingCTA = ({ onOpenModal }) => (
   <section className="relative py-20 md:py-28 px-4 sm:px-6">
     <div className="max-w-[760px] mx-auto">
-      <div className="reveal relative gradient-border-strong rounded-[2rem] p-8 md:p-14 overflow-hidden text-center">
+      <div className="reveal relative gradient-border-strong rounded-[2rem] p-8 md:p-14 overflow-hidden text-center closing-pulse">
         <div className="absolute -top-24 -right-16 w-[320px] h-[320px] rounded-full bg-[#F239FF]/15 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-16 w-[320px] h-[320px] rounded-full bg-[#8943E3]/15 blur-3xl pointer-events-none" />
         <div className="relative">
@@ -940,6 +940,25 @@ export default function App() {
         }
         @media (prefers-reduced-motion: reduce) {
           .cta-primary::before, .cta-whatsapp::before { animation: none; opacity: 0; }
+        }
+
+        /* Slow pulsing glow for ClosingCTA card */
+        @keyframes closingPulse {
+          0%, 100% { opacity: 0.35; transform: scale(0.94); }
+          50%      { opacity: 0.95; transform: scale(1.06); }
+        }
+        .closing-pulse::after {
+          content: "";
+          position: absolute;
+          inset: -10%;
+          background: radial-gradient(ellipse at center, rgba(137,67,227,0.28) 0%, rgba(242,57,255,0.14) 38%, transparent 70%);
+          filter: blur(18px);
+          animation: closingPulse 9s ease-in-out infinite;
+          pointer-events: none;
+          z-index: 0;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .closing-pulse::after { animation: none; opacity: 0.5; transform: none; }
         }
 
         /* Slow pulsing violet glow behind nav countdown */
