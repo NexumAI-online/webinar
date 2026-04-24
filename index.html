@@ -196,6 +196,28 @@
     pointer-events: none;
     opacity: 0.6;
   }
+  /* Traveling light for CTA buttons */
+  .cta-primary::before,
+  .cta-whatsapp::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(from var(--travel-angle, 0deg),
+      transparent 0turn, transparent 0.74turn,
+      rgba(255,255,255,0) 0.78turn,
+      rgba(255,255,255,0.85) 0.86turn,
+      rgba(255,255,255,1) 0.9turn,
+      rgba(255,255,255,0.85) 0.94turn,
+      transparent 1turn);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: travelAngle 5.5s linear infinite;
+    animation-delay: var(--travel-delay, 0s);
+    pointer-events: none;
+    opacity: 0.95;
+    z-index: 3;
+  }
 
   /* Scrollbar fino */
   ::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -244,6 +266,7 @@
   /* Honor reduced motion */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    .cta-primary::before, .cta-whatsapp::before { opacity: 0 !important; }
   }
 
   /* Hide arrows in number inputs */
@@ -309,6 +332,7 @@
 
   /* WhatsApp CTA — green ↔ violet gradient */
   .cta-whatsapp {
+    position: relative;
     background: linear-gradient(95deg, #25D366 0%, #1FAE5F 30%, #8943E3 95%);
     background-size: 200% 100%;
     box-shadow:

@@ -914,6 +914,34 @@ export default function App() {
           .card-travel::before { animation: none; opacity: 0.25; }
         }
 
+        /* Traveling light around CTA buttons */
+        .cta-primary, .cta-whatsapp { position: relative; }
+        .cta-primary::before, .cta-whatsapp::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          padding: 1.5px;
+          background: conic-gradient(from var(--travel-angle, 0deg),
+            transparent 0turn, transparent 0.74turn,
+            rgba(255,255,255,0) 0.78turn,
+            rgba(255,255,255,0.85) 0.86turn,
+            rgba(255,255,255,1) 0.9turn,
+            rgba(255,255,255,0.85) 0.94turn,
+            transparent 1turn);
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor;
+                  mask-composite: exclude;
+          animation: travelAngle 5.5s linear infinite;
+          animation-delay: var(--travel-delay, 0s);
+          pointer-events: none;
+          opacity: 0.95;
+          z-index: 3;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cta-primary::before, .cta-whatsapp::before { animation: none; opacity: 0; }
+        }
+
         /* Slow pulsing violet glow behind nav countdown */
         @keyframes navGlow {
           0%, 100% { opacity: 0.18; transform: translate(-50%, -50%) scale(0.92); }
