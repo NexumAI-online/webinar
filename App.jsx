@@ -448,10 +448,30 @@ const ForYou = () => {
     "Quieres solo teoría y no estás dispuesto a implementar",
     "Ya facturas +10K€/mes y tienes tu sistema armado",
   ];
+  const onMove = (e) => {
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    const nx = (x / r.width) - 0.5;
+    const ny = (y / r.height) - 0.5;
+    el.style.setProperty("--mx", x + "px");
+    el.style.setProperty("--my", y + "px");
+    el.style.setProperty("--nx", nx.toFixed(3));
+    el.style.setProperty("--ny", ny.toFixed(3));
+    el.style.setProperty("--on", "1");
+  };
+  const onLeave = (e) => {
+    const el = e.currentTarget;
+    el.style.setProperty("--on", "0");
+    el.style.setProperty("--nx", "0");
+    el.style.setProperty("--ny", "0");
+  };
   return (
     <section className="relative py-20 md:py-28 px-4 sm:px-6">
       <div className="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-5 md:gap-6">
-        <div className="reveal glass gradient-border rounded-3xl p-7 md:p-8">
+        <div onMouseMove={onMove} onMouseLeave={onLeave}
+             className="spotlight-card spotlight-card--yes reveal glass gradient-border rounded-3xl p-7 md:p-8">
           <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-300/80 font-semibold">✓ Es para ti si...</div>
           <h3 className="mt-3 font-bold text-2xl md:text-3xl">Esta masterclass es <span className="text-brand-gradient">para ti</span></h3>
           <ul className="mt-6 space-y-4">
@@ -465,7 +485,8 @@ const ForYou = () => {
             ))}
           </ul>
         </div>
-        <div className="reveal glass rounded-3xl p-7 md:p-8 border border-white/10" style={{ transitionDelay: "80ms" }}>
+        <div onMouseMove={onMove} onMouseLeave={onLeave}
+             className="spotlight-card spotlight-card--no reveal glass rounded-3xl p-7 md:p-8 border border-white/10" style={{ transitionDelay: "80ms" }}>
           <div className="text-[11px] uppercase tracking-[0.3em] text-rose-300/80 font-semibold">✗ No es para ti si...</div>
           <h3 className="mt-3 font-bold text-2xl md:text-3xl text-white/80">No es para ti</h3>
           <ul className="mt-6 space-y-4">
@@ -955,6 +976,72 @@ export default function App() {
         }
         @media (prefers-reduced-motion: reduce) {
           .cta-primary::before, .cta-whatsapp::before { animation: none; opacity: 0; }
+        }
+
+        /* Spotlight card — mouse-tracking glow + tilt */
+        .spotlight-card {
+          position: relative;
+          isolation: isolate;
+          --mx: 50%;
+          --my: 50%;
+          --nx: 0;
+          --ny: 0;
+          --on: 0;
+          --accent: 52, 211, 153;
+          --accent-bright: 110, 231, 183;
+          transition: transform 0.55s cubic-bezier(.2,.7,.2,1), box-shadow 0.55s;
+          will-change: transform;
+        }
+        .spotlight-card--no {
+          --accent: 244, 63, 94;
+          --accent-bright: 251, 113, 133;
+        }
+        .spotlight-card:hover {
+          transform:
+            perspective(1200px)
+            rotateY(calc(var(--nx) * 5deg))
+            rotateX(calc(var(--ny) * -4deg))
+            translateZ(0);
+          box-shadow: 0 28px 80px -24px rgba(var(--accent), 0.28);
+        }
+        .spotlight-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background:
+            radial-gradient(circle 360px at var(--mx) var(--my),
+              rgba(var(--accent-bright), 0.22),
+              rgba(var(--accent), 0.08) 32%,
+              transparent 62%);
+          opacity: var(--on);
+          transition: opacity 0.5s cubic-bezier(.2,.7,.2,1);
+          pointer-events: none;
+          z-index: 0;
+        }
+        .spotlight-card::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          padding: 1.5px;
+          background:
+            radial-gradient(circle 280px at var(--mx) var(--my),
+              rgba(var(--accent-bright), 0.95),
+              rgba(var(--accent), 0.35) 35%,
+              transparent 60%);
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor;
+                  mask-composite: exclude;
+          opacity: var(--on);
+          transition: opacity 0.5s cubic-bezier(.2,.7,.2,1);
+          pointer-events: none;
+          z-index: 2;
+        }
+        .spotlight-card > * { position: relative; z-index: 1; }
+        @media (prefers-reduced-motion: reduce) {
+          .spotlight-card { transform: none !important; }
+          .spotlight-card::before, .spotlight-card::after { opacity: 0 !important; }
         }
 
         /* Interactive grid that warps under cursor */
