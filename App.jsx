@@ -371,7 +371,7 @@ const PainBlock = () => {
 
           <div className="relative mt-10 flex items-center justify-center gap-3 text-white/60 text-[14px]">
             <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#F239FF]/60" />
-            <span className="italic">En esta masterclass te mostramos cómo resolverlos con un sistema claro</span>
+            <span className="italic">En esta masterclass te mostramos cómo resolverlos con nuestro sistema validado</span>
             <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#F239FF]/60" />
           </div>
         </div>
