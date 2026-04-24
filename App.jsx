@@ -890,8 +890,8 @@ const PostRegistration = () => {
           Además, no te olvides de:
         </h3>
         <div className="mt-8 grid sm:grid-cols-2 gap-4 md:gap-5">
-          <div className="gradient-border rounded-2xl p-6">
-            <div className="w-11 h-11 rounded-xl brand-gradient flex items-center justify-center">
+          <div className="reminder-card gradient-border rounded-2xl p-6">
+            <div className="w-11 h-11 rounded-xl brand-gradient flex items-center justify-center" style={{ boxShadow: "0 10px 30px -8px rgba(242,57,255,0.5)" }}>
               <Calendar className="w-5 h-5 text-white" strokeWidth={2} />
             </div>
             <h4 className="mt-4 font-bold text-[17px] leading-snug">Reservá la fecha en tu calendario</h4>
@@ -899,12 +899,12 @@ const PostRegistration = () => {
               El evento en vivo es el <span className="text-white font-medium">miércoles 7 de mayo a las 19:00h (hora España)</span>. Bloqueá tu agenda para no perdértelo.
             </p>
             <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer"
-               className="mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold text-white text-[13px] tracking-wide gradient-border-strong hover:bg-white/5 transition">
+               className="cta-primary mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold text-white text-[13px] tracking-wide">
               <Calendar className="w-4 h-4" /> Añadir al calendario
             </a>
           </div>
-          <div className="gradient-border rounded-2xl p-6">
-            <div className="w-11 h-11 rounded-xl bg-[#F239FF]/15 border border-[#F239FF]/30 flex items-center justify-center">
+          <div className="reminder-card reminder-card--pink gradient-border rounded-2xl p-6">
+            <div className="w-11 h-11 rounded-xl bg-[#F239FF]/15 border border-[#F239FF]/30 flex items-center justify-center" style={{ boxShadow: "0 10px 30px -8px rgba(242,57,255,0.4)" }}>
               <Mail className="w-5 h-5 text-[#F239FF]" strokeWidth={2} />
             </div>
             <h4 className="mt-4 font-bold text-[17px] leading-snug">Revisá la bandeja de entrada</h4>
@@ -1170,6 +1170,51 @@ export default function App() {
         }
         @media (prefers-reduced-motion: reduce) {
           .nav-glow { animation: none; opacity: 0.3; }
+        }
+
+        /* Reminder card — dotted grid fondo + glow al hover */
+        .reminder-card {
+          position: relative;
+          overflow: hidden;
+          transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s, border-color .5s;
+        }
+        .reminder-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(rgba(255,255,255,0.09) 1px, transparent 1px);
+          background-size: 16px 16px;
+          mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 35%, transparent 90%);
+          -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 35%, transparent 90%);
+          opacity: 0.55;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .reminder-card::after {
+          content: "";
+          position: absolute;
+          inset: -25%;
+          background: radial-gradient(ellipse 60% 70% at 20% 0%, rgba(137,67,227,0.22), transparent 60%);
+          filter: blur(32px);
+          pointer-events: none;
+          z-index: 0;
+          opacity: 0.55;
+          transition: opacity .55s;
+        }
+        .reminder-card > * { position: relative; z-index: 1; }
+        .reminder-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 24px 60px -24px rgba(137,67,227,0.55);
+        }
+        .reminder-card:hover::after { opacity: 1; }
+        .reminder-card--pink::after {
+          background: radial-gradient(ellipse 60% 70% at 80% 0%, rgba(242,57,255,0.22), transparent 60%);
+        }
+        .reminder-card--pink:hover {
+          box-shadow: 0 24px 60px -24px rgba(242,57,255,0.55);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .reminder-card:hover { transform: none; }
         }
 
         /* WhatsApp pulse — emerald + purple, matches grupo card */
