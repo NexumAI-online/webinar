@@ -519,12 +519,12 @@ const About = () => (
           </div>
         </div>
       </div>
-      <div className="reveal order-1 lg:order-2">
+      <div className="reveal order-1 lg:order-2 text-center lg:text-left">
         <div className="text-[11px] uppercase tracking-[0.3em] text-[#F239FF] font-semibold">Quiénes somos</div>
         <h2 className="mt-4 font-bold text-[clamp(1.8rem,4.5vw,3rem)] leading-[1.05] tracking-[-0.02em]">
           Agustín Badt <span className="text-brand-gradient">&</span> Juan Pablo Rosso
         </h2>
-        <div className="mt-6 space-y-4 text-white/70 text-[16px] leading-relaxed">
+        <div className="mt-6 space-y-4 text-white/70 text-[16px] leading-relaxed max-w-xl mx-auto lg:mx-0">
           <p>Somos los <span className="text-white font-medium">co-fundadores de Nexum AI</span>, una agencia de IA que trabaja con empresas en todo el mundo.</p>
           <p>No somos gurús. No vendemos humo. Construimos Nexum AI desde cero y hoy ayudamos a empresas reales a implementar IA en sus operaciones.</p>
           <p>En esta masterclass te mostramos el <span className="text-white">mismo sistema</span> que usamos nosotros, y que replicaríamos si tuviéramos que empezar de cero hoy.</p>
@@ -802,7 +802,7 @@ const Marquee = () => {
   const items = Array(16).fill(item);
   return (
     <div className="relative overflow-hidden brand-gradient border-y border-white/10">
-      <div className="flex whitespace-nowrap py-3 font-bold tracking-[0.1em] text-sm md:text-base text-white" style={{ animation: "marquee 26s linear infinite" }}>
+      <div className="marquee-track flex whitespace-nowrap py-3 font-bold tracking-[0.1em] text-sm md:text-base text-white">
         {items.map((t, i) => (
           <span key={i} className="flex items-center gap-8 px-6">{t}<span className="text-white/70">✦</span></span>
         ))}
@@ -954,6 +954,27 @@ export default function App() {
   return (
     <div className="relative min-h-screen bg-[#0A0A0A] text-white" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif", letterSpacing: '-0.005em' }}>
       <style>{`
+        html, body { overflow-x: hidden; max-width: 100vw; }
+        body { position: relative; width: 100%; }
+
+        /* Sin tap-highlight azul en iOS ni outline nativo al enfocar inputs */
+        input, textarea, select, button, a { -webkit-tap-highlight-color: transparent; }
+        input:focus, textarea:focus, select:focus { outline: none; box-shadow: none; }
+        input::-moz-focus-inner { border: 0; }
+
+        /* Marquee — infinito y lento */
+        @keyframes marquee {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+          animation: marquee 55s linear infinite;
+          will-change: transform;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .marquee-track { animation: marquee 180s linear infinite !important; }
+        }
+
         @property --travel-angle {
           syntax: '<angle>';
           inherits: false;

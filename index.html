@@ -92,7 +92,7 @@
     --nexum-deep:   #6A32B3;
     --nexum-ink:    #0A0A0A;
   }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
   body {
     background: #0A0A0A;
     color: #fff;
@@ -102,7 +102,21 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
   }
+  #root { overflow-x: hidden; max-width: 100vw; }
+
+  /* No-select azul en form inputs: sacar outline nativo y tap-highlight de iOS */
+  input, textarea, select, button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  input::-moz-focus-inner { border: 0; }
   /* Fondo global: dotted grid + gradiente radial sutil + ruido */
   .bg-stage::before {
     content: "";
@@ -277,8 +291,15 @@
   /* Focus rings */
   .field:focus-within { border-color: rgba(242,57,255,0.6); box-shadow: 0 0 0 3px rgba(242,57,255,0.15); }
 
-  /* Marquee duplicate trick */
-  .marquee-track { animation: marquee 26s linear infinite; }
+  /* Marquee duplicate trick — lento, infinito */
+  .marquee-track {
+    animation: marquee 55s linear infinite;
+    will-change: transform;
+  }
+  /* Respetamos reduced-motion a nivel global pero mantenemos el marquee legible */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: marquee 180s linear infinite !important; }
+  }
 
   /* Traveling light border — uses @property for animated conic angle */
   @property --travel-angle {
@@ -1162,12 +1183,12 @@
               </div>
             </div>
           </div>
-          <div className="reveal order-1 lg:order-2">
+          <div className="reveal order-1 lg:order-2 text-center lg:text-left">
             <div className="text-[11px] uppercase tracking-[0.3em] text-nexum-pink font-semibold">Quiénes somos</div>
             <h2 className="mt-4 font-display font-bold text-[clamp(1.8rem,4.5vw,3rem)] leading-[1.05] tracking-[-0.02em]">
               Agustín Badt <span className="text-brand-gradient">&</span> Juan Pablo Rosso
             </h2>
-            <div className="mt-6 space-y-4 text-white/70 text-[16px] leading-relaxed">
+            <div className="mt-6 space-y-4 text-white/70 text-[16px] leading-relaxed max-w-xl mx-auto lg:mx-0">
               <p>
                 Somos los <span className="text-white font-medium">co-fundadores de Nexum AI</span>, una agencia de IA que trabaja con empresas en todo el mundo.
               </p>
