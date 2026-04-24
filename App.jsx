@@ -529,17 +529,26 @@ const About = () => (
           <p>No somos gurús. No vendemos humo. Construimos Nexum AI desde cero y hoy ayudamos a empresas reales a implementar IA en sus operaciones.</p>
           <p>En esta masterclass te mostramos el <span className="text-white">mismo sistema</span> que usamos nosotros, y que replicaríamos si tuviéramos que empezar de cero hoy.</p>
         </div>
-        <div className="mt-10 grid grid-cols-3 gap-4 md:gap-6">
-          {[
-            { n: "+50", l: "Empresas asesoradas" },
-            { n: "+3 años", l: "En el mercado de IA" },
-            { n: "Global", l: "Clientes en todo el mundo" },
-          ].map((s) => (
-            <div key={s.l} className="gradient-border rounded-2xl p-4 md:p-5 text-center">
-              <div className="font-bold text-2xl md:text-3xl text-brand-solid">{s.n}</div>
-              <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50">{s.l}</div>
-            </div>
-          ))}
+        <div className="mt-10 stats-marquee">
+          <div className="stats-track">
+            {(() => {
+              const stats = [
+                { n: "+15.000€", l: "Facturación mensual" },
+                { n: "+50",      l: "Empresas asesoradas" },
+                { n: "+3 años",  l: "En el mercado de IA" },
+                { n: "+20",      l: "Empresas capacitadas" },
+                { n: "Global",   l: "Clientes en todo el mundo" },
+              ];
+              return [...stats, ...stats].map((s, i) => (
+                <div key={i} className="stats-card gradient-border rounded-2xl p-4 md:p-5 text-center">
+                  <div className="font-bold text-2xl md:text-3xl text-brand-solid whitespace-nowrap">{s.n}</div>
+                  <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50 whitespace-nowrap">{s.l}</div>
+                </div>
+              ));
+            })()}
+          </div>
+          <div className="stats-fade stats-fade-left" aria-hidden="true" />
+          <div className="stats-fade stats-fade-right" aria-hidden="true" />
         </div>
       </div>
     </div>
@@ -976,6 +985,53 @@ export default function App() {
         }
         @media (prefers-reduced-motion: reduce) {
           .cta-primary::before, .cta-whatsapp::before { animation: none; opacity: 0; }
+        }
+
+        /* Stats marquee — continuous belt with blurred edges */
+        .stats-marquee {
+          position: relative;
+          overflow: hidden;
+          padding: 0.5rem 0;
+        }
+        .stats-track {
+          display: flex;
+          gap: 1rem;
+          width: max-content;
+          animation: stats-slide 34s linear infinite;
+        }
+        @keyframes stats-slide {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+        .stats-card {
+          flex: 0 0 auto;
+          min-width: 200px;
+        }
+        .stats-fade {
+          position: absolute;
+          top: 0; bottom: 0;
+          width: 18%;
+          pointer-events: none;
+          z-index: 3;
+          backdrop-filter: blur(5px);
+          -webkit-backdrop-filter: blur(5px);
+        }
+        .stats-fade-left {
+          left: 0;
+          -webkit-mask-image: linear-gradient(to right, black, transparent);
+                  mask-image: linear-gradient(to right, black, transparent);
+          background: linear-gradient(to right, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.35) 60%, transparent 100%);
+        }
+        .stats-fade-right {
+          right: 0;
+          -webkit-mask-image: linear-gradient(to left, black, transparent);
+                  mask-image: linear-gradient(to left, black, transparent);
+          background: linear-gradient(to left, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.35) 60%, transparent 100%);
+        }
+        .stats-marquee:hover .stats-track { animation-play-state: paused; }
+        @media (prefers-reduced-motion: reduce) {
+          .stats-track { animation: none; }
+          .stats-fade { display: none; }
         }
 
         /* Spotlight card — mouse-tracking glow + tilt */
