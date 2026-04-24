@@ -683,7 +683,7 @@ const Modal = ({ open, onClose, onSubmit, submitting }) => {
          onClick={onClose}
          role="dialog" aria-modal="true">
       <div onClick={(e) => e.stopPropagation()}
-           className="relative w-full max-w-[480px] gradient-border-strong rounded-3xl p-7 md:p-9 bg-[#0E0A14]"
+           className="relative w-full max-w-[480px] gradient-border-strong rounded-3xl p-7 md:p-9 bg-[#0E0A14] overflow-hidden modal-pulse"
            style={{ animation: "scaleIn .22s cubic-bezier(.2,.9,.2,1.2) both" }}>
         <button type="button" onClick={onClose} aria-label="Cerrar"
                 className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition">
@@ -959,6 +959,26 @@ export default function App() {
         }
         @media (prefers-reduced-motion: reduce) {
           .closing-pulse::after { animation: none; opacity: 0.5; transform: none; }
+        }
+
+        /* Modal pulse — more translucent */
+        @keyframes modalPulse {
+          0%, 100% { opacity: 0.18; transform: scale(0.92); }
+          50%      { opacity: 0.55; transform: scale(1.08); }
+        }
+        .modal-pulse::after {
+          content: "";
+          position: absolute;
+          inset: -18%;
+          background: radial-gradient(ellipse at center, rgba(137,67,227,0.18) 0%, rgba(242,57,255,0.09) 40%, transparent 72%);
+          filter: blur(26px);
+          animation: modalPulse 11s ease-in-out infinite;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .modal-pulse > * { position: relative; z-index: 1; }
+        @media (prefers-reduced-motion: reduce) {
+          .modal-pulse::after { animation: none; opacity: 0.25; transform: none; }
         }
 
         /* Slow pulsing violet glow behind nav countdown */
