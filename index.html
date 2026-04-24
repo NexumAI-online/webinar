@@ -280,6 +280,38 @@
   /* Marquee duplicate trick */
   .marquee-track { animation: marquee 26s linear infinite; }
 
+  /* Stats rotator — film-roll step carousel */
+  .stats-rotator {
+    position: relative;
+    overflow: hidden;
+  }
+  .stats-rotator-track {
+    display: flex;
+    gap: 1rem;
+    will-change: transform;
+  }
+  .stats-rotator-card {
+    flex: 0 0 var(--card-w, 33.3333%);
+    min-width: 0;
+  }
+  .stats-rotator::before,
+  .stats-rotator::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 14%;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .stats-rotator::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(14,10,20,0.9), transparent);
+  }
+  .stats-rotator::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(14,10,20,0.9), transparent);
+  }
+
   /* Traveling light border — uses @property for animated conic angle */
   @property --travel-angle {
     syntax: '<angle>';
@@ -1111,22 +1143,75 @@
               </p>
             </div>
 
-            <div className="mt-10 grid grid-cols-3 gap-4 md:gap-6">
-              {[
-                { n: '+50',    l: 'Empresas asesoradas' },
-                { n: '+3 años',l: 'En el mercado de IA' },
-                { n: 'Global', l: 'Clientes en todo el mundo' },
-              ].map(s => (
-                <div key={s.l} className="gradient-border rounded-2xl p-4 md:p-5 text-center">
-                  <div className="font-display font-bold text-2xl md:text-3xl text-brand-solid">{s.n}</div>
-                  <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50">{s.l}</div>
-                </div>
-              ))}
-            </div>
+            <div className="mt-10"><StatsRotator /></div>
           </div>
         </div>
       </section>
     );
+
+    /* ---------- Stats Rotator (film-roll) ---------- */
+    const StatsRotator = () => {
+      const stats = [
+        { n: '+15.000€', l: 'Facturación mensual' },
+        { n: '+50',      l: 'Empresas asesoradas' },
+        { n: '+3 años',  l: 'En el mercado de IA' },
+        { n: '+20',      l: 'Empresas capacitadas' },
+        { n: 'Global',   l: 'Clientes en todo el mundo' },
+      ];
+      const viewportRef = useRef(null);
+      const trackRef = useRef(null);
+      const [index, setIndex] = useState(0);
+      useEffect(() => {
+        const id = setInterval(() => setIndex(i => i + 1), 5000);
+        return () => clearInterval(id);
+      }, []);
+      useEffect(() => {
+        const vp = viewportRef.current;
+        const track = trackRef.current;
+        if (!vp || !track) return;
+        const measure = () => {
+          const gap = 16;
+          const w = vp.offsetWidth;
+          const isNarrow = w < 640;
+          const cardsVisible = isNarrow ? 1 : 3;
+          const cardW = (w - (cardsVisible - 1) * gap) / cardsVisible;
+          track.style.setProperty('--card-w', cardW + 'px');
+          track.style.setProperty('--card-step', (cardW + gap) + 'px');
+        };
+        measure();
+        const ro = new ResizeObserver(measure);
+        ro.observe(vp);
+        return () => ro.disconnect();
+      }, []);
+      const extended = [...stats, ...stats];
+      const offset = index % stats.length;
+      useEffect(() => {
+        const track = trackRef.current; if (!track) return;
+        track.style.transition = 'transform 0.9s cubic-bezier(.65,.05,.36,1)';
+        if (offset === 0 && index !== 0) {
+          track.style.transform = 'translateX(calc(var(--card-step) * ' + (-stats.length) + '))';
+          const onEnd = () => {
+            track.style.transition = 'none';
+            track.style.transform = 'translateX(0)';
+          };
+          track.addEventListener('transitionend', onEnd, { once: true });
+          return () => track.removeEventListener('transitionend', onEnd);
+        }
+        track.style.transform = 'translateX(calc(var(--card-step) * ' + (-offset) + '))';
+      }, [index, offset]);
+      return (
+        <div className="stats-rotator" ref={viewportRef}>
+          <div className="stats-rotator-track" ref={trackRef}>
+            {extended.map((s, i) => (
+              <div key={i} className="stats-rotator-card gradient-border rounded-2xl p-4 md:p-5 text-center">
+                <div className="font-display font-bold text-2xl md:text-3xl text-brand-solid whitespace-nowrap">{s.n}</div>
+                <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50 whitespace-nowrap">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
 
     /* ---------- Bonus ---------- */
     const Bonus = ({ onOpenModal }) => {
