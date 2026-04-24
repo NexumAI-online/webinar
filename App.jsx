@@ -529,83 +529,22 @@ const About = () => (
           <p>No somos gurús. No vendemos humo. Construimos Nexum AI desde cero y hoy ayudamos a empresas reales a implementar IA en sus operaciones.</p>
           <p>En esta masterclass te mostramos el <span className="text-white">mismo sistema</span> que usamos nosotros, y que replicaríamos si tuviéramos que empezar de cero hoy.</p>
         </div>
-        <div className="mt-10"><StatsRotator /></div>
+        <div className="mt-10 grid grid-cols-3 gap-4 md:gap-6">
+          {[
+            { n: "+50", l: "Empresas asesoradas" },
+            { n: "+3 años", l: "En el mercado de IA" },
+            { n: "Global", l: "Clientes en todo el mundo" },
+          ].map((s) => (
+            <div key={s.l} className="gradient-border rounded-2xl p-4 md:p-5 text-center">
+              <div className="font-bold text-2xl md:text-3xl text-brand-solid">{s.n}</div>
+              <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50">{s.l}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 );
-
-const StatsRotator = () => {
-  const stats = [
-    { n: "+15.000€", l: "Facturación mensual" },
-    { n: "+50",      l: "Empresas asesoradas" },
-    { n: "+3 años",  l: "En el mercado de IA" },
-    { n: "+20",      l: "Empresas capacitadas" },
-    { n: "Global",   l: "Clientes en todo el mundo" },
-  ];
-  const viewportRef = useRef(null);
-  const [offsetPx, setOffsetPx] = useState(0);
-  const [index, setIndex] = useState(0);
-  const [resetting, setResetting] = useState(false);
-
-  useEffect(() => {
-    const id = setInterval(() => setIndex((i) => i + 1), 3000);
-    return () => clearInterval(id);
-  }, []);
-
-  useEffect(() => {
-    if (index === 0) return;
-    const offset = index % stats.length;
-    if (offset === 0) {
-      const t = setTimeout(() => setResetting(true), 900);
-      return () => clearTimeout(t);
-    }
-  }, [index]);
-
-  useEffect(() => {
-    if (!resetting) return;
-    const raf = requestAnimationFrame(() => setResetting(false));
-    return () => cancelAnimationFrame(raf);
-  }, [resetting]);
-
-  useEffect(() => {
-    const vp = viewportRef.current;
-    if (!vp) return;
-    const compute = () => {
-      const card = vp.querySelector(".stats-rotator-card");
-      if (!card) return;
-      const cardW = card.getBoundingClientRect().width;
-      if (cardW <= 0) return;
-      const step = cardW + 16;
-      const offset = index % stats.length;
-      const target = resetting ? 0 : (offset === 0 && index !== 0 ? stats.length : offset);
-      setOffsetPx(-target * step);
-    };
-    compute();
-    window.addEventListener("resize", compute);
-    return () => window.removeEventListener("resize", compute);
-  }, [index, resetting]);
-
-  const extended = [...stats, ...stats];
-  return (
-    <div className="stats-rotator" ref={viewportRef}>
-      <div
-        className="stats-rotator-track"
-        style={{
-          transform: "translateX(" + offsetPx + "px)",
-          transition: resetting ? "none" : "transform 0.9s cubic-bezier(.65,.05,.36,1)",
-        }}
-      >
-        {extended.map((s, i) => (
-          <div key={i} className="stats-rotator-card gradient-border rounded-2xl p-4 md:p-5 text-center">
-            <div className="font-bold text-2xl md:text-3xl text-brand-solid whitespace-nowrap">{s.n}</div>
-            <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50 leading-snug">{s.l}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 const Bonus = ({ onOpenModal }) => {
   const items = [
@@ -1037,60 +976,6 @@ export default function App() {
         }
         @media (prefers-reduced-motion: reduce) {
           .cta-primary::before, .cta-whatsapp::before { animation: none; opacity: 0; }
-        }
-
-        /* Stats rotator — film-roll step carousel */
-        .stats-rotator {
-          position: relative;
-          overflow: hidden;
-          min-height: 96px;
-          width: 100%;
-          max-width: 100%;
-        }
-        .stats-rotator-track {
-          display: grid;
-          grid-auto-flow: column;
-          grid-auto-columns: calc((100% - 2rem) / 3);
-          gap: 1rem;
-          will-change: transform;
-        }
-        @media (max-width: 639px) {
-          .stats-rotator-track { grid-auto-columns: 100%; }
-        }
-        .stats-rotator-card {
-          min-width: 0;
-          box-sizing: border-box;
-        }
-        .stats-rotator::before,
-        .stats-rotator::after {
-          content: "";
-          position: absolute;
-          top: 0; bottom: 0;
-          width: 22%;
-          pointer-events: none;
-          z-index: 3;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-        }
-        .stats-rotator::before {
-          left: 0;
-          background: linear-gradient(to right,
-            rgba(10,8,16,0.98) 0%,
-            rgba(10,8,16,0.85) 35%,
-            rgba(10,8,16,0.45) 70%,
-            transparent 100%);
-          -webkit-mask-image: linear-gradient(to right, black 0%, black 25%, transparent 100%);
-                  mask-image: linear-gradient(to right, black 0%, black 25%, transparent 100%);
-        }
-        .stats-rotator::after {
-          right: 0;
-          background: linear-gradient(to left,
-            rgba(10,8,16,0.98) 0%,
-            rgba(10,8,16,0.85) 35%,
-            rgba(10,8,16,0.45) 70%,
-            transparent 100%);
-          -webkit-mask-image: linear-gradient(to left, black 0%, black 25%, transparent 100%);
-                  mask-image: linear-gradient(to left, black 0%, black 25%, transparent 100%);
         }
 
         /* Spotlight card — mouse-tracking glow + tilt */
