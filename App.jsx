@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 import {
   Target, Map, Rocket, Check, X, Lock, Zap, Gift, ArrowRight,
   ChevronDown, Sparkles, MessageSquare, Calendar, Users, ExternalLink,
@@ -550,13 +550,14 @@ const StatsRotator = () => {
     const id = setInterval(() => setIndex((i) => i + 1), 5000);
     return () => clearInterval(id);
   }, []);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const vp = viewportRef.current;
     const track = trackRef.current;
     if (!vp || !track) return;
     const measure = () => {
       const gap = 16;
       const w = vp.offsetWidth;
+      if (w <= 0) return;
       const isNarrow = w < 640;
       const cardsVisible = isNarrow ? 1 : 3;
       const cardW = (w - (cardsVisible - 1) * gap) / cardsVisible;
@@ -1035,15 +1036,18 @@ export default function App() {
         .stats-rotator {
           position: relative;
           overflow: hidden;
+          min-height: 92px;
         }
         .stats-rotator-track {
           display: flex;
           gap: 1rem;
+          width: max-content;
           will-change: transform;
         }
         .stats-rotator-card {
-          flex: 0 0 var(--card-w, 33.3333%);
+          flex: 0 0 var(--card-w, 220px);
           min-width: 0;
+          box-sizing: border-box;
         }
         .stats-rotator::before,
         .stats-rotator::after {
