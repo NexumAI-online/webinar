@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   Target, Map, Rocket, Check, X, Lock, Zap, Gift, ArrowRight,
   ChevronDown, Sparkles, MessageSquare, Calendar, Users, ExternalLink,
@@ -544,53 +544,65 @@ const StatsRotator = () => {
     { n: "Global",   l: "Clientes en todo el mundo" },
   ];
   const viewportRef = useRef(null);
-  const trackRef = useRef(null);
+  const [cardW, setCardW] = useState(0);
   const [index, setIndex] = useState(0);
+  const [resetting, setResetting] = useState(false);
+
   useEffect(() => {
     const id = setInterval(() => setIndex((i) => i + 1), 5000);
     return () => clearInterval(id);
   }, []);
-  useLayoutEffect(() => {
+
+  useEffect(() => {
     const vp = viewportRef.current;
-    const track = trackRef.current;
-    if (!vp || !track) return;
+    if (!vp) return;
     const measure = () => {
-      const gap = 16;
       const w = vp.offsetWidth;
       if (w <= 0) return;
-      const isNarrow = w < 640;
-      const cardsVisible = isNarrow ? 1 : 3;
-      const cardW = (w - (cardsVisible - 1) * gap) / cardsVisible;
-      track.style.setProperty("--card-w", cardW + "px");
-      track.style.setProperty("--card-step", cardW + gap + "px");
+      const gap = 16;
+      const visible = w < 640 ? 1 : 3;
+      setCardW((w - (visible - 1) * gap) / visible);
     };
     measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(vp);
-    return () => ro.disconnect();
+    let ro;
+    try { ro = new ResizeObserver(measure); ro.observe(vp); } catch (e) {}
+    window.addEventListener("resize", measure);
+    return () => {
+      try { ro && ro.disconnect(); } catch (e) {}
+      window.removeEventListener("resize", measure);
+    };
   }, []);
-  const extended = [...stats, ...stats];
+
+  const gap = 16;
+  const step = cardW + gap;
   const offset = index % stats.length;
+  const visualOffset = resetting ? 0 : (offset === 0 && index !== 0 ? stats.length : offset);
+
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    track.style.transition = "transform 0.9s cubic-bezier(.65,.05,.36,1)";
     if (offset === 0 && index !== 0) {
-      track.style.transform = "translateX(calc(var(--card-step) * " + -stats.length + "))";
-      const onEnd = () => {
-        track.style.transition = "none";
-        track.style.transform = "translateX(0)";
-      };
-      track.addEventListener("transitionend", onEnd, { once: true });
-      return () => track.removeEventListener("transitionend", onEnd);
+      const t = setTimeout(() => setResetting(true), 950);
+      return () => clearTimeout(t);
+    } else if (resetting) {
+      requestAnimationFrame(() => setResetting(false));
     }
-    track.style.transform = "translateX(calc(var(--card-step) * " + -offset + "))";
   }, [index, offset]);
+
+  const extended = [...stats, ...stats];
   return (
     <div className="stats-rotator" ref={viewportRef}>
-      <div className="stats-rotator-track" ref={trackRef}>
+      <div
+        className="stats-rotator-track"
+        style={{
+          transform: cardW > 0 ? "translateX(" + (-visualOffset * step) + "px)" : "translateX(0)",
+          transition: resetting ? "none" : "transform 0.9s cubic-bezier(.65,.05,.36,1)",
+        }}
+      >
         {extended.map((s, i) => (
-          <div key={i} className="stats-rotator-card gradient-border rounded-2xl p-4 md:p-5 text-center">
+          <div
+            key={i}
+            className="stats-rotator-card gradient-border rounded-2xl p-4 md:p-5 text-center"
+            style={{ width: cardW > 0 ? cardW + "px" : "220px" }}
+          >
             <div className="font-bold text-2xl md:text-3xl text-brand-solid whitespace-nowrap">{s.n}</div>
             <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50 whitespace-nowrap">{s.l}</div>
           </div>
@@ -1036,7 +1048,7 @@ export default function App() {
         .stats-rotator {
           position: relative;
           overflow: hidden;
-          min-height: 92px;
+          min-height: 96px;
         }
         .stats-rotator-track {
           display: flex;
@@ -1045,8 +1057,7 @@ export default function App() {
           will-change: transform;
         }
         .stats-rotator-card {
-          flex: 0 0 var(--card-w, 220px);
-          min-width: 0;
+          flex: 0 0 auto;
           box-sizing: border-box;
         }
         .stats-rotator::before,
