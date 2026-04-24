@@ -176,7 +176,7 @@ const Nav = ({ countdown, onOpenModal }) => (
 );
 
 const Hero = ({ countdown, onOpenModal }) => (
-  <section id="top" className="relative pt-24 md:pt-28 pb-14 md:pb-24 px-4 sm:px-6">
+  <section id="top" className="relative pt-16 md:pt-28 pb-10 md:pb-24 px-4 sm:px-6">
     <div className="max-w-[1180px] mx-auto grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-14 items-center">
       <div className="text-center lg:text-left" style={{ animation: "fadeUp .9s cubic-bezier(.2,.7,.2,1) both" }}>
         <LiveBadge />
@@ -353,10 +353,10 @@ const PainBlock = () => {
     el.style.setProperty("--mg", "0");
   };
   return (
-    <section className="relative py-20 md:py-28 px-4 sm:px-6">
+    <section className="relative py-14 md:py-28 px-4 sm:px-6">
       <div className="max-w-[1080px] mx-auto">
         <div ref={cardRef} onMouseMove={onMove} onMouseLeave={onLeave}
-             className="reveal relative gradient-border-strong rounded-[2rem] p-8 md:p-14 overflow-hidden grid-warp">
+             className="reveal relative gradient-border-strong rounded-[2rem] p-6 md:p-14 overflow-hidden grid-warp">
           <div className="absolute -top-40 -right-20 w-[460px] h-[460px] rounded-full bg-[#F239FF]/15 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-40 -left-20 w-[460px] h-[460px] rounded-full bg-[#8943E3]/18 blur-3xl pointer-events-none" />
           <NebulaCanvas />
@@ -405,7 +405,7 @@ const LearnCards = () => {
       body: "Sin saber de código, sin ser técnico y sin perder meses probando herramientas sin dirección. El sistema exacto que usamos en Nexum AI y que replicamos con agencias reales." },
   ];
   return (
-    <section className="relative py-20 md:py-28 px-4 sm:px-6">
+    <section className="relative py-14 md:py-28 px-4 sm:px-6">
       <div className="max-w-[1180px] mx-auto">
         <div className="text-center max-w-2xl mx-auto reveal">
           <div className="text-[11px] uppercase tracking-[0.3em] text-[#F239FF] font-semibold">Evento en directo</div>
@@ -415,7 +415,7 @@ const LearnCards = () => {
         </div>
         <div className="mt-14 grid md:grid-cols-3 gap-5 md:gap-6">
           {cards.map((c, i) => (
-            <div key={c.title} className="reveal card-travel gradient-border rounded-3xl p-7 md:p-8 group hover:-translate-y-1 transition-all duration-500 relative overflow-hidden" style={{ transitionDelay: `${i * 80}ms`, "--travel-delay": `${i * 1.4}s` }}>
+            <div key={c.title} className="reveal card-travel gradient-border rounded-3xl p-5 md:p-8 group hover:-translate-y-1 transition-all duration-500 relative overflow-hidden" style={{ transitionDelay: `${i * 80}ms`, "--travel-delay": `${i * 1.4}s` }}>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "radial-gradient(circle at 30% 0%, rgba(242,57,255,0.10), transparent 60%)" }} />
               <div className="relative">
                 <div className="w-12 h-12 rounded-xl brand-gradient flex items-center justify-center text-white" style={{ boxShadow: "0 0 40px rgba(137,67,227,0.35), 0 0 80px rgba(242,57,255,0.18)" }}>
@@ -468,10 +468,10 @@ const ForYou = () => {
     el.style.setProperty("--ny", "0");
   };
   return (
-    <section className="relative py-20 md:py-28 px-4 sm:px-6">
+    <section className="relative py-14 md:py-28 px-4 sm:px-6">
       <div className="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-5 md:gap-6">
         <div onMouseMove={onMove} onMouseLeave={onLeave}
-             className="spotlight-card spotlight-card--yes reveal glass gradient-border rounded-3xl p-7 md:p-8">
+             className="spotlight-card spotlight-card--yes reveal glass gradient-border rounded-3xl p-5 md:p-8">
           <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-300/80 font-semibold">✓ Es para ti si...</div>
           <h3 className="mt-3 font-bold text-2xl md:text-3xl">Esta masterclass es <span className="text-brand-gradient">para ti</span></h3>
           <ul className="mt-6 space-y-4">
@@ -486,7 +486,7 @@ const ForYou = () => {
           </ul>
         </div>
         <div onMouseMove={onMove} onMouseLeave={onLeave}
-             className="spotlight-card spotlight-card--no reveal glass rounded-3xl p-7 md:p-8 border border-white/10" style={{ transitionDelay: "80ms" }}>
+             className="spotlight-card spotlight-card--no reveal glass rounded-3xl p-5 md:p-8 border border-white/10" style={{ transitionDelay: "80ms" }}>
           <div className="text-[11px] uppercase tracking-[0.3em] text-rose-300/80 font-semibold">✗ No es para ti si...</div>
           <h3 className="mt-3 font-bold text-2xl md:text-3xl text-white/80">No es para ti</h3>
           <ul className="mt-6 space-y-4">
@@ -506,7 +506,7 @@ const ForYou = () => {
 };
 
 const About = () => (
-  <section className="relative py-20 md:py-28 px-4 sm:px-6">
+  <section className="relative py-14 md:py-28 px-4 sm:px-6">
     <div className="max-w-[1180px] mx-auto grid lg:grid-cols-[0.8fr_1fr] gap-10 lg:gap-16 items-center">
       <div className="reveal relative order-2 lg:order-1">
         <div className="absolute -inset-6 bg-gradient-to-br from-[#8943E3]/30 to-[#F239FF]/20 blur-3xl rounded-[3rem]" />
@@ -529,15 +529,15 @@ const About = () => (
           <p>No somos gurús. No vendemos humo. Construimos Nexum AI desde cero y hoy ayudamos a empresas reales a implementar IA en sus operaciones.</p>
           <p>En esta masterclass te mostramos el <span className="text-white">mismo sistema</span> que usamos nosotros, y que replicaríamos si tuviéramos que empezar de cero hoy.</p>
         </div>
-        <div className="mt-10 grid grid-cols-3 gap-4 md:gap-6">
+        <div className="mt-8 md:mt-10 grid grid-cols-3 gap-2.5 md:gap-6">
           {[
             { n: "+50", l: "Empresas asesoradas" },
             { n: "+3 años", l: "En el mercado de IA" },
             { n: "Global", l: "Clientes en todo el mundo" },
           ].map((s) => (
-            <div key={s.l} className="gradient-border rounded-2xl p-4 md:p-5 text-center">
-              <div className="font-bold text-2xl md:text-3xl text-brand-solid">{s.n}</div>
-              <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50">{s.l}</div>
+            <div key={s.l} className="gradient-border rounded-2xl p-3 md:p-5 text-center">
+              <div className="font-bold text-xl md:text-3xl text-brand-solid leading-tight">{s.n}</div>
+              <div className="text-[10px] md:text-[11px] mt-1 uppercase tracking-[0.08em] md:tracking-[0.15em] text-white/50 leading-snug">{s.l}</div>
             </div>
           ))}
         </div>
@@ -554,9 +554,9 @@ const Bonus = ({ onOpenModal }) => {
     { Icon: Sparkles, label: "Workspace", short: "Workspace de Claude Code con +22 skills profesionales" },
   ];
   return (
-    <section className="relative py-20 md:py-28 px-4 sm:px-6">
+    <section className="relative py-14 md:py-28 px-4 sm:px-6">
       <div className="max-w-[1180px] mx-auto">
-        <div className="reveal relative gradient-border-strong rounded-[2rem] p-7 md:p-12 overflow-hidden">
+        <div className="reveal relative gradient-border-strong rounded-[2rem] p-6 md:p-12 overflow-hidden">
           <div className="absolute -top-32 -right-32 w-[440px] h-[440px] rounded-full bg-[#F239FF]/22 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -left-32 w-[440px] h-[440px] rounded-full bg-[#8943E3]/22 blur-3xl pointer-events-none" />
           <div className="relative grid lg:grid-cols-[1fr_1.05fr] gap-10 lg:gap-14 items-center">
@@ -657,9 +657,9 @@ const Bonus = ({ onOpenModal }) => {
 };
 
 const ClosingCTA = ({ onOpenModal }) => (
-  <section className="relative py-20 md:py-28 px-4 sm:px-6">
+  <section className="relative py-14 md:py-28 px-4 sm:px-6">
     <div className="max-w-[760px] mx-auto">
-      <div className="reveal relative gradient-border-strong rounded-[2rem] p-8 md:p-14 overflow-hidden text-center closing-pulse">
+      <div className="reveal relative gradient-border-strong rounded-[2rem] p-6 md:p-14 overflow-hidden text-center closing-pulse">
         <div className="absolute -top-24 -right-16 w-[320px] h-[320px] rounded-full bg-[#F239FF]/15 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-16 w-[320px] h-[320px] rounded-full bg-[#8943E3]/15 blur-3xl pointer-events-none" />
         <div className="relative">
