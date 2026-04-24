@@ -1013,22 +1013,22 @@ export default function App() {
 
         /* Modal pulse — more translucent */
         @keyframes modalPulse {
-          0%, 100% { opacity: 0.18; transform: scale(0.92); }
-          50%      { opacity: 0.55; transform: scale(1.08); }
+          0%, 100% { opacity: 0.3; transform: scale(0.94); }
+          50%      { opacity: 0.8; transform: scale(1.08); }
         }
         .modal-pulse::after {
           content: "";
           position: absolute;
-          inset: -18%;
-          background: radial-gradient(ellipse at center, rgba(137,67,227,0.18) 0%, rgba(242,57,255,0.09) 40%, transparent 72%);
-          filter: blur(26px);
+          inset: -15%;
+          background: radial-gradient(ellipse at center, rgba(137,67,227,0.26) 0%, rgba(242,57,255,0.13) 40%, transparent 72%);
+          filter: blur(24px);
           animation: modalPulse 11s ease-in-out infinite;
           pointer-events: none;
           z-index: 0;
         }
         .modal-pulse > * { position: relative; z-index: 1; }
         @media (prefers-reduced-motion: reduce) {
-          .modal-pulse::after { animation: none; opacity: 0.25; transform: none; }
+          .modal-pulse::after { animation: none; opacity: 0.4; transform: none; }
         }
 
         /* Slow pulsing violet glow behind nav countdown */
