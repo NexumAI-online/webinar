@@ -980,11 +980,11 @@ export default function App() {
           100% { transform: translateX(-50%); }
         }
         .marquee-track {
-          animation: marquee 55s linear infinite;
+          animation: marquee 30s linear infinite;
           will-change: transform;
         }
         @media (prefers-reduced-motion: reduce) {
-          .marquee-track { animation: marquee 180s linear infinite !important; }
+          .marquee-track { animation: marquee 90s linear infinite !important; }
         }
 
         @property --travel-angle {

@@ -307,12 +307,12 @@
     100% { transform: translateX(-50%); }
   }
   .marquee-track {
-    animation: marquee 55s linear infinite;
+    animation: marquee 30s linear infinite;
     will-change: transform;
   }
   /* Respetamos reduced-motion a nivel global pero mantenemos el marquee legible */
   @media (prefers-reduced-motion: reduce) {
-    .marquee-track { animation: marquee 180s linear infinite !important; }
+    .marquee-track { animation: marquee 90s linear infinite !important; }
   }
 
   /* Traveling light border — uses @property for animated conic angle */
