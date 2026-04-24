@@ -334,19 +334,34 @@ const PainBlock = () => {
     "No sabes cómo conseguir clientes de forma predecible",
     "Crees que necesitas saber programar y eso te frena",
   ];
+  const cardRef = useRef(null);
+  const onMove = (e) => {
+    const el = cardRef.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    const nx = (x / r.width) - 0.5;
+    const ny = (y / r.height) - 0.5;
+    el.style.setProperty("--mx", x + "px");
+    el.style.setProperty("--my", y + "px");
+    el.style.setProperty("--nx", nx.toFixed(3));
+    el.style.setProperty("--ny", ny.toFixed(3));
+    el.style.setProperty("--mg", "1");
+  };
+  const onLeave = () => {
+    const el = cardRef.current; if (!el) return;
+    el.style.setProperty("--mg", "0");
+  };
   return (
     <section className="relative py-20 md:py-28 px-4 sm:px-6">
       <div className="max-w-[1080px] mx-auto">
-        <div className="reveal relative gradient-border-strong rounded-[2rem] p-8 md:p-14 overflow-hidden">
+        <div ref={cardRef} onMouseMove={onMove} onMouseLeave={onLeave}
+             className="reveal relative gradient-border-strong rounded-[2rem] p-8 md:p-14 overflow-hidden grid-warp">
           <div className="absolute -top-40 -right-20 w-[460px] h-[460px] rounded-full bg-[#F239FF]/15 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-40 -left-20 w-[460px] h-[460px] rounded-full bg-[#8943E3]/18 blur-3xl pointer-events-none" />
           <NebulaCanvas />
-          <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{
-            backgroundImage: "linear-gradient(rgba(137,67,227,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(137,67,227,0.07) 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-            maskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 92%)",
-            WebkitMaskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 92%)",
-          }} />
+          <div className="grid-base absolute inset-0 pointer-events-none" aria-hidden="true" />
+          <div className="grid-hot absolute inset-0 pointer-events-none" aria-hidden="true" />
 
           <div className="relative text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full gradient-border text-[11px] tracking-[0.25em] uppercase font-semibold text-white/70">
@@ -940,6 +955,41 @@ export default function App() {
         }
         @media (prefers-reduced-motion: reduce) {
           .cta-primary::before, .cta-whatsapp::before { animation: none; opacity: 0; }
+        }
+
+        /* Interactive grid that warps under cursor */
+        .grid-warp { --mx: 50%; --my: 50%; --nx: 0; --ny: 0; --mg: 0; }
+        .grid-warp .grid-base,
+        .grid-warp .grid-hot {
+          background-image:
+            linear-gradient(rgba(137,67,227,0.07) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(137,67,227,0.07) 1px, transparent 1px);
+          background-size: 32px 32px;
+          will-change: transform, opacity;
+        }
+        .grid-warp .grid-base {
+          -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 92%);
+                  mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 92%);
+          transform:
+            scale(calc(1 + var(--mg) * 0.04))
+            translate3d(
+              calc(var(--nx) * var(--mg) * -22px),
+              calc(var(--ny) * var(--mg) * -22px),
+              0);
+          transition: transform 1s cubic-bezier(.2,.7,.2,1);
+        }
+        .grid-warp .grid-hot {
+          background-image:
+            linear-gradient(rgba(242,57,255,0.42) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(242,57,255,0.42) 1px, transparent 1px);
+          -webkit-mask-image: radial-gradient(circle 220px at var(--mx) var(--my), black 0%, rgba(0,0,0,0.55) 25%, transparent 70%);
+                  mask-image: radial-gradient(circle 220px at var(--mx) var(--my), black 0%, rgba(0,0,0,0.55) 25%, transparent 70%);
+          opacity: var(--mg);
+          transition: opacity 0.55s cubic-bezier(.2,.7,.2,1);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .grid-warp .grid-base { transition: none; transform: none; }
+          .grid-warp .grid-hot { display: none; }
         }
 
         /* Slow pulsing glow for ClosingCTA card */
