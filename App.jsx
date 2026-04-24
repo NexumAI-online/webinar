@@ -959,8 +959,20 @@ export default function App() {
 
         /* Sin tap-highlight azul en iOS ni outline nativo al enfocar inputs */
         input, textarea, select, button, a { -webkit-tap-highlight-color: transparent; }
-        input:focus, textarea:focus, select:focus { outline: none; box-shadow: none; }
+        input, textarea, select {
+          -webkit-appearance: none;
+             -moz-appearance: none;
+                  appearance: none;
+          border-radius: 0;
+        }
+        input:focus, textarea:focus, select:focus,
+        input:focus-visible, textarea:focus-visible, select:focus-visible {
+          outline: none !important;
+          box-shadow: none !important;
+          -webkit-box-shadow: none !important;
+        }
         input::-moz-focus-inner { border: 0; }
+        input:focus { caret-color: #F239FF; }
 
         /* Marquee — infinito y lento */
         @keyframes marquee {

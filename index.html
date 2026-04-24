@@ -112,11 +112,21 @@
   input, textarea, select, button, a {
     -webkit-tap-highlight-color: transparent;
   }
-  input:focus, textarea:focus, select:focus {
-    outline: none;
-    box-shadow: none;
+  input, textarea, select {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+    border-radius: 0;
+  }
+  input:focus, textarea:focus, select:focus,
+  input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
   }
   input::-moz-focus-inner { border: 0; }
+  /* Safari iOS: matar el "focus ring" azul propio del user agent */
+  input:focus { caret-color: #F239FF; }
   /* Fondo global: dotted grid + gradiente radial sutil + ruido */
   .bg-stage::before {
     content: "";
@@ -292,6 +302,10 @@
   .field:focus-within { border-color: rgba(242,57,255,0.6); box-shadow: 0 0 0 3px rgba(242,57,255,0.15); }
 
   /* Marquee duplicate trick — lento, infinito */
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
   .marquee-track {
     animation: marquee 55s linear infinite;
     will-change: transform;
