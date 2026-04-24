@@ -664,7 +664,7 @@ const ClosingCTA = ({ onOpenModal }) => (
         <div className="absolute -bottom-24 -left-16 w-[320px] h-[320px] rounded-full bg-[#8943E3]/15 blur-3xl pointer-events-none" />
         <div className="relative">
           <h2 className="font-bold text-[clamp(1.8rem,4.5vw,2.8rem)] leading-[1.1] tracking-[-0.02em]">
-            ¿Listo para llenarte de clientes en <span className="text-brand-gradient">tu agencia de IA</span>?
+            ¿Listo para explotar de clientes <span className="text-brand-gradient">tu agencia de IA</span>?
           </h2>
           <p className="mt-4 text-white/65 max-w-xl mx-auto leading-relaxed">
             Reserva tu lugar en la masterclass del 7 de mayo y accede al Kit de Inicio.
