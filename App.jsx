@@ -549,7 +549,7 @@ const StatsRotator = () => {
   const [resetting, setResetting] = useState(false);
 
   useEffect(() => {
-    const id = setInterval(() => setIndex((i) => i + 1), 5000);
+    const id = setInterval(() => setIndex((i) => i + 1), 3000);
     return () => clearInterval(id);
   }, []);
 
@@ -557,7 +557,7 @@ const StatsRotator = () => {
     if (index === 0) return;
     const offset = index % stats.length;
     if (offset === 0) {
-      const t = setTimeout(() => setResetting(true), 950);
+      const t = setTimeout(() => setResetting(true), 900);
       return () => clearTimeout(t);
     }
   }, [index]);
@@ -599,7 +599,7 @@ const StatsRotator = () => {
         {extended.map((s, i) => (
           <div key={i} className="stats-rotator-card gradient-border rounded-2xl p-4 md:p-5 text-center">
             <div className="font-bold text-2xl md:text-3xl text-brand-solid whitespace-nowrap">{s.n}</div>
-            <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50 whitespace-nowrap">{s.l}</div>
+            <div className="text-[11px] mt-1 uppercase tracking-[0.15em] text-white/50 leading-snug">{s.l}</div>
           </div>
         ))}
       </div>
@@ -1066,17 +1066,31 @@ export default function App() {
           content: "";
           position: absolute;
           top: 0; bottom: 0;
-          width: 14%;
+          width: 22%;
           pointer-events: none;
           z-index: 3;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
         }
         .stats-rotator::before {
           left: 0;
-          background: linear-gradient(to right, rgba(14,10,20,0.9), transparent);
+          background: linear-gradient(to right,
+            rgba(10,8,16,0.98) 0%,
+            rgba(10,8,16,0.85) 35%,
+            rgba(10,8,16,0.45) 70%,
+            transparent 100%);
+          -webkit-mask-image: linear-gradient(to right, black 0%, black 25%, transparent 100%);
+                  mask-image: linear-gradient(to right, black 0%, black 25%, transparent 100%);
         }
         .stats-rotator::after {
           right: 0;
-          background: linear-gradient(to left, rgba(14,10,20,0.9), transparent);
+          background: linear-gradient(to left,
+            rgba(10,8,16,0.98) 0%,
+            rgba(10,8,16,0.85) 35%,
+            rgba(10,8,16,0.45) 70%,
+            transparent 100%);
+          -webkit-mask-image: linear-gradient(to left, black 0%, black 25%, transparent 100%);
+                  mask-image: linear-gradient(to left, black 0%, black 25%, transparent 100%);
         }
 
         /* Spotlight card — mouse-tracking glow + tilt */
