@@ -1652,6 +1652,23 @@
       const closeModal = useCallback(() => setModalOpen(false), []);
 
       const handleSubmit = useCallback((data) => {
+        // Fire-and-forget a n8n. credentials:'omit' evita el preflight con
+        // Allow-Credentials que rompía con sendBeacon. keepalive:true permite
+        // que el POST sobreviva a la navegación / cierre de pestaña.
+        const webhookUrl = 'https://n8n.nexumai.online/webhook/57459119-11c9-4608-bc70-85b9193a9b88';
+        const payload = { email: data.email, nombre: data.name };
+        fetch(webhookUrl, {
+          method: 'POST',
+          mode: 'cors',
+          credentials: 'omit',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          keepalive: true,
+        }).catch(() => {});
+        // Marker en DevTools para confirmar que el handler corrió (Network → POST al webhook)
+        // eslint-disable-next-line no-console
+        console.log('[webinar] webhook n8n →', payload);
+
         setSubmitting(true);
         setTimeout(() => {
           setSubmitting(false);
