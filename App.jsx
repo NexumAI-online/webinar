@@ -569,7 +569,7 @@ const Bonus = ({ onOpenModal }) => {
                 Accede a tu <span className="text-brand-gradient">Kit de Inicio</span> para Agencias de IA
               </h2>
               <p className="mt-4 text-white/70 leading-relaxed">
-                Valorado en 197€ — incluido con tu registro a la masterclass.
+                Valorado en 790€ — incluido con tu registro a la masterclass.
               </p>
               <blockquote className="mt-4 pl-4 border-l-2 border-[#F239FF]/60 text-white/75 italic text-[15px] leading-relaxed">
                 Para que llegues preparado y saques el máximo provecho al evento
@@ -643,10 +643,10 @@ const Bonus = ({ onOpenModal }) => {
                 </div>
               </div>
 
-              {/* Floating "197€" price tag */}
+              {/* Floating "790€" price tag */}
               <div className="absolute -top-3 -right-3 md:-top-4 md:-right-4 rounded-full px-3.5 py-2 brand-gradient text-white text-[11px] uppercase tracking-[0.18em] font-bold rotate-[6deg]"
                    style={{ boxShadow: "0 12px 30px -8px rgba(242,57,255,0.65)" }}>
-                197€ incluido
+                790€ incluido
               </div>
             </div>
           </div>
@@ -731,7 +731,7 @@ const Modal = ({ open, onClose, onSubmit, submitting }) => {
         <p className="mt-2 text-white/55 text-[14px]">Para la masterclass del 7 de mayo.</p>
 
         <div className="mt-5 gradient-border rounded-xl p-4 text-left text-[13.5px] text-white/80 leading-relaxed">
-          <span className="text-[#F239FF]">🎁</span> Al registrarte accedes a tu <span className="text-white font-medium">Kit de Inicio para Agencias de IA</span> <span className="text-white/55">(valorado en 197€)</span>
+          <span className="text-[#F239FF]">🎁</span> Al registrarte accedes a tu <span className="text-white font-medium">Kit de Inicio para Agencias de IA</span> <span className="text-white/55">(valorado en 790€)</span>
         </div>
 
         <form onSubmit={handleSubmit} noValidate className="mt-5 space-y-4">
@@ -909,7 +909,7 @@ const PostRegistration = () => {
             </div>
             <h4 className="mt-4 font-bold text-[17px] leading-snug">Revisá la bandeja de entrada</h4>
             <p className="mt-2 text-white/65 text-[14px] leading-relaxed">
-              Te acabamos de enviar un email con todos los detalles del evento y tu <span className="text-white font-medium">Kit de Inicio para Agencias de IA</span> (197€) listo para descargar.
+              Te acabamos de enviar un email con todos los detalles del evento y tu <span className="text-white font-medium">Kit de Inicio para Agencias de IA</span> (790€) listo para descargar.
             </p>
           </div>
         </div>
