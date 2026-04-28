@@ -548,10 +548,9 @@ const About = () => (
 
 const Bonus = ({ onOpenModal }) => {
   const items = [
-    { Icon: Map, label: "Roadmap", short: "Roadmap completo para lanzar tu agencia de IA desde cero" },
-    { Icon: FileText, label: "Oferta", short: "Guía paso a paso para crear y vender tu primera oferta de IA" },
-    { Icon: MessageSquare, label: "Notion", short: "Workspace de Notion listo para clonar — el que usamos día a día" },
-    { Icon: Sparkles, label: "Workspace", short: "Workspace completo de Claude Code: todo lo necesario + las 5 skills clave para tu agencia de IA" },
+    { Icon: Map, label: "Roadmap", short: "Roadmap completo con task tracker de 7 días — el camino exacto de dónde estás a tu primera agencia de IA funcionando" },
+    { Icon: Sparkles, label: "Claude Code", short: "Workspace de Claude Code listo para usar — con las 5 skills clave para monetizar tu agencia de IA desde el día uno" },
+    { Icon: Folder, label: "Notion", short: "Workspace de Notion para agencias de IA — el mismo que usamos nosotros, listo para clonar y operar desde el día uno" },
   ];
   return (
     <section className="relative py-14 md:py-28 px-4 sm:px-6">
