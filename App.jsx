@@ -181,7 +181,7 @@ const Hero = ({ countdown, onOpenModal }) => (
       <div className="text-center lg:text-left" style={{ animation: "fadeUp .9s cubic-bezier(.2,.7,.2,1) both" }}>
         <LiveBadge />
         <h1 className="mt-6 font-black text-[clamp(2.2rem,6.2vw,4.6rem)] leading-[1.02] tracking-[-0.02em]">
-          Cómo construir una agencia de IA que facture <span className="text-brand-gradient">5.000€/mes</span>
+          Cómo construir una agencia de IA que facture <span className="text-brand-gradient">+5.000€/mes</span>
         </h1>
         <p className="mt-6 text-white/75 text-lg sm:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">
           El sistema que construimos luego de escalar Nexum AI a <span className="text-white font-semibold">+15.000€/mes</span>, diseñado para que aproveches <span className="text-brand-solid font-semibold">la mayor oportunidad de la última década</span> sin necesidad de ser técnico.
@@ -549,9 +549,9 @@ const About = () => (
 const Bonus = ({ onOpenModal }) => {
   const items = [
     { Icon: Map, label: "Roadmap", short: "Roadmap completo para lanzar tu agencia de IA desde cero" },
-    { Icon: FileText, label: "Plantillas", short: "Plantillas de oferta y propuesta listas para enviar a clientes" },
-    { Icon: MessageSquare, label: "Scripts", short: "Scripts de captación para conseguir tus primeros proyectos" },
-    { Icon: Sparkles, label: "Workspace", short: "Workspace de Claude Code con +22 skills profesionales" },
+    { Icon: FileText, label: "Oferta", short: "Guía paso a paso para crear y vender tu primera oferta de IA" },
+    { Icon: MessageSquare, label: "Notion", short: "Workspace de Notion listo para clonar — el que usamos día a día" },
+    { Icon: Sparkles, label: "Workspace", short: "Workspace completo de Claude Code: todo lo necesario + las 5 skills clave para tu agencia de IA" },
   ];
   return (
     <section className="relative py-14 md:py-28 px-4 sm:px-6">
