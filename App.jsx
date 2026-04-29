@@ -194,7 +194,7 @@ const Hero = ({ countdown, onOpenModal }) => (
         <div className="mt-8 flex flex-col items-center lg:items-start gap-4">
           <div className="inline-flex items-center gap-2 text-white/85 font-medium">
             <Calendar className="w-5 h-5 text-[#F239FF]" />
-            <span>Miércoles 7 de mayo · 19:00h (España)</span>
+            <span>Jueves 7 de mayo · 19:00h (España)</span>
           </div>
         </div>
 
@@ -896,7 +896,7 @@ const PostRegistration = () => {
             </div>
             <h4 className="mt-4 font-bold text-[17px] leading-snug">Reservá la fecha en tu calendario</h4>
             <p className="mt-2 text-white/65 text-[14px] leading-relaxed">
-              El evento en vivo es el <span className="text-white font-medium">miércoles 7 de mayo a las 19:00h (hora España)</span>. Bloqueá tu agenda para no perdértelo.
+              El evento en vivo es el <span className="text-white font-medium">jueves 7 de mayo a las 19:00h (hora España)</span>. Bloqueá tu agenda para no perdértelo.
             </p>
             <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer"
                className="cta-primary mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold text-white text-[13px] tracking-wide">
